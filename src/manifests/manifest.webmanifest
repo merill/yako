@@ -1,0 +1,45 @@
+{
+	"name": "My Startup Page",
+	"description": "A minimalist new tab page for Microsoft admins. Quick access to all your Microsoft admin portals.",
+	"theme_color": "#ffffff",
+	"background_color": "#222222",
+	"display": "standalone",
+	"orientation": "portrait",
+	"scope": "/",
+	"start_url": "/",
+	"prefer_related_applications": false,
+	"icons": [
+		{
+			"src": "src/assets/favicons/favicon-128x128.png",
+			"type": "image/png",
+			"sizes": "128x128"
+		},
+		{
+			"src": "src/assets/favicons/apple-touch-icon.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "src/assets/favicons/favicon-512x512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "src/assets/screenshots/screenshot-1.webp",
+			"type": "image/webp",
+			"sizes": "554x1200"
+		},
+		{
+			"src": "src/assets/screenshots/screenshot-2.webp",
+			"type": "image/webp",
+			"sizes": "554x1200"
+		},
+		{
+			"src": "src/assets/screenshots/screenshot-3.webp",
+			"type": "image/webp",
+			"sizes": "554x1200"
+		}
+	]
+}

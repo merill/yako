@@ -1,0 +1,61 @@
+if (globalThis.chrome) {
+    if (chrome.storage) {
+        chrome.action.onClicked.addListener(createNewTab)
+        chrome.runtime.onInstalled.addListener(handleInstalled)
+    }
+} else {
+    self.addEventListener('activate', updateCache)
+    self.addEventListener('fetch', retrieveCache)
+}
+
+const CACHE_KEY = '1.0.0'
+const API_URLS = ['raw.githubusercontent.com']
+
+// Web Extension
+
+function createNewTab() {
+    const url = chrome.runtime.getURL('index.html')
+    chrome.tabs.create({ url })
+}
+
+function handleInstalled(details) {
+    if (details.reason === 'install') {
+        createNewTab()
+    }
+}
+
+// Progressive Web App
+
+async function updateCache() {
+    const keys = await caches.keys()
+
+    for (const key of keys) {
+        if (CACHE_KEY !== key) {
+            await caches.delete(key)
+        }
+    }
+}
+
+function retrieveCache(event) {
+    const url = event.request.url
+    const isApi = API_URLS.some((api) => url.includes(api))
+
+    event.respondWith(
+        (async () => {
+            if (isApi) {
+                return fetch(event.request)
+            }
+
+            const cachedResponse = await caches.match(event.request)
+
+            if (cachedResponse) {
+                return cachedResponse
+            }
+
+            const cache = await caches.open(CACHE_KEY)
+            cache.add(event.request.url)
+
+            return fetch(event.request)
+        })(),
+    )
+}

@@ -1,0 +1,10 @@
+{
+    "extensionName": {
+        "message": "My Startup Page",
+        "description": "extension name"
+    },
+    "extensionDesc": {
+        "message": "A minimalist new tab page for Microsoft admins. Quick access to all your Microsoft admin portals.",
+        "description": "extension description"
+    }
+}

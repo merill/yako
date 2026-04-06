@@ -1,0 +1,300 @@
+#sb_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 15em;
+    max-width: var(--searchbar-width, 30em);
+}
+
+#sb_container.hidden {
+    display: none;
+}
+
+#searchbar-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 1em;
+    background-color: var(--searchbar-background, rgba(255, 255, 255, 0.1));
+    border: 1px solid #fff1;
+    backdrop-filter: blur(2em);
+    -webkit-backdrop-filter: blur(2em);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: border-color 0.2s;
+}
+
+#sb_container.has-results #searchbar-wrapper {
+    border-color: rgba(var(--blue, 66, 133, 244), 0.4);
+}
+
+#sb-icon {
+    width: 1.3em;
+    height: 1.3em;
+    margin-inline-start: 1em;
+    color: #fff8;
+    flex-shrink: 0;
+}
+
+#searchbar {
+    width: 100%;
+    height: 2.5em;
+    color: #fff;
+    padding-inline-start: 0.5em;
+    padding-inline-end: 1em;
+    font-size: 1.3em;
+    font-family: inherit;
+    font-weight: inherit;
+    text-overflow: ellipsis;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#searchbar::placeholder {
+    transition: opacity 0.2s;
+    text-transform: none;
+    color: #fff8;
+}
+
+/* Opaque mode (light backgrounds) */
+#sb_container.opaque #searchbar,
+#sb_container.opaque #sb-icon {
+    color: #333;
+}
+
+#sb_container.opaque #searchbar::placeholder {
+    color: #3334;
+}
+
+#sb_container.opaque #searchbar-wrapper {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: #0002;
+}
+
+#sb_container.opaque #sb-suggestions {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: #0002;
+}
+
+#sb_container.opaque #sb-suggestions li {
+    color: #333;
+}
+
+#sb_container.opaque #sb-suggestions li:hover,
+#sb_container.opaque #sb-suggestions li[aria-selected='true'] {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+#sb_container.opaque #sb-suggestions .suggest-category {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #555;
+}
+
+/* Suggestions dropdown */
+#sb-suggestions {
+    position: absolute;
+    top: calc(100% + 0.35em);
+    left: 0;
+    right: 0;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0.4em;
+    font-size: 1em;
+    text-shadow: none;
+    border-radius: 1em;
+    box-sizing: border-box;
+    backdrop-filter: blur(2em);
+    -webkit-backdrop-filter: blur(2em);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 12px;
+    border: 1px solid #fff1;
+    background-color: var(--searchbar-background, rgba(255, 255, 255, 0.1));
+    z-index: 4;
+    max-height: 24em;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+#sb-suggestions.shown {
+    display: block;
+}
+
+#sb-suggestions li {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    margin: 0;
+    padding: 0.5em 0.7em;
+    border-radius: 0.5em;
+    border: 1px solid transparent;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    transition: background-color 0.1s;
+}
+
+#sb-suggestions li:hover,
+#sb-suggestions li[aria-selected='true'] {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(var(--blue, 66, 133, 244), 0.3);
+}
+
+#sb-suggestions li img {
+    width: 1.4em;
+    height: 1.4em;
+    object-fit: contain;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+#sb-suggestions .suggest-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+}
+
+#sb-suggestions .suggest-name {
+    font-size: 0.95em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#sb-suggestions .suggest-url {
+    font-size: 0.75em;
+    opacity: 0.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#sb-suggestions .suggest-category {
+    font-size: 0.7em;
+    padding: 0.15em 0.5em;
+    border-radius: 0.5em;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fffc;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* No results message */
+#sb-suggestions .no-results {
+    text-align: center;
+    padding: 1em;
+    opacity: 0.5;
+    font-size: 0.9em;
+    cursor: default;
+}
+
+#sb-suggestions .no-results:hover {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/* ====================== */
+/* Catalog browser in settings */
+/* ====================== */
+
+#catalog-search-wrapper {
+    padding-top: 0;
+}
+
+#i_catalog-search {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#catalog-results {
+    max-height: 16em;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 0 0.8em;
+}
+
+#catalog-results:empty {
+    display: none;
+}
+
+.catalog-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4em 0.5em;
+    border-radius: 0.4em;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.catalog-item:hover {
+    background-color: rgba(var(--blue, 66, 133, 244), 0.1);
+}
+
+.catalog-item img {
+    width: 1.2em;
+    height: 1.2em;
+    object-fit: contain;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.catalog-item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05em;
+}
+
+.catalog-item-name {
+    font-size: 0.85em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.catalog-item-url {
+    font-size: 0.7em;
+    opacity: 0.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.catalog-item-category {
+    font-size: 0.65em;
+    padding: 0.1em 0.4em;
+    border-radius: 0.3em;
+    background-color: rgba(var(--blue, 66, 133, 244), 0.15);
+    color: var(--color-blue);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.catalog-item-add {
+    font-size: 0.75em;
+    padding: 0.2em 0.6em;
+    border-radius: 0.3em;
+    border: 1px solid rgba(var(--blue, 66, 133, 244), 0.3);
+    background-color: rgba(var(--blue, 66, 133, 244), 0.1);
+    color: var(--color-blue);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.1s;
+    white-space: nowrap;
+}
+
+.catalog-item-add:hover {
+    background-color: rgba(var(--blue, 66, 133, 244), 0.25);
+}
+
+.catalog-item-add.added {
+    border-color: rgba(var(--green, 52, 168, 83), 0.3);
+    background-color: rgba(var(--green, 52, 168, 83), 0.1);
+    color: var(--color-green, #34a853);
+    cursor: default;
+}
