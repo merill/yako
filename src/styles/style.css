@@ -48,6 +48,7 @@
 @import './features/msportals';
 @import './features/catalog';
 @import './features/catalogbrowser';
+@import './features/iconpicker';
 
 /* <!> Responsive must be imported last */
 @import './_responsive';

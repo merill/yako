@@ -3,8 +3,11 @@ import { quickLinks } from '../links/index.ts'
 import { isElem, isLink } from '../links/helpers.ts'
 import { getHTMLTemplate } from '../../shared/dom.ts'
 import { storage } from '../../storage.ts'
+import portalIconMap from '../../../data/portal-icons.json' with { type: 'json' }
 import type { CatalogEntry } from '../../../types/local.ts'
-import type { LinkElem } from '../../../types/shared.ts'
+import type { LinkElem, LinkIcon } from '../../../types/shared.ts'
+
+const ICON_BASE_URL = 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/'
 
 // ─── Constants ───
 
@@ -193,16 +196,40 @@ function renderGrid(): void {
     }
 }
 
+function getPortalIconUrl(name: string): string | undefined {
+    const iconMap = portalIconMap as Record<string, string>
+    const path = iconMap[name]
+    if (!path || path.startsWith('_')) return undefined
+    return ICON_BASE_URL + encodeURI(path)
+}
+
 function createItemTile(entry: CatalogEntry): HTMLDivElement {
     const item = document.createElement('div')
     item.className = 'catalog-browser-item'
     item.title = entry.url
 
-    // Icon with initials and pastel background
+    // Icon: use real icon from mapping if available, otherwise pastel initials
     const iconWrap = document.createElement('div')
     iconWrap.className = 'catalog-browser-item-icon'
-    iconWrap.style.backgroundColor = getPastelColor(entry.name)
-    iconWrap.textContent = getInitials(entry.name)
+
+    const iconUrl = getPortalIconUrl(entry.name)
+
+    if (iconUrl) {
+        const img = document.createElement('img')
+        img.src = iconUrl
+        img.alt = ''
+        img.loading = 'lazy'
+        img.addEventListener('error', () => {
+            // On load error, fall back to pastel initials
+            img.remove()
+            iconWrap.style.backgroundColor = getPastelColor(entry.name)
+            iconWrap.textContent = getInitials(entry.name)
+        })
+        iconWrap.appendChild(img)
+    } else {
+        iconWrap.style.backgroundColor = getPastelColor(entry.name)
+        iconWrap.textContent = getInitials(entry.name)
+    }
 
     // Name label
     const nameEl = document.createElement('span')
@@ -231,11 +258,19 @@ function createItemTile(entry: CatalogEntry): HTMLDivElement {
 
             item.classList.remove('added')
         } else {
+            const addLink: { title: string; url: string; icon?: LinkIcon } = {
+                title: entry.name,
+                url: entry.url,
+            }
+
+            // Auto-apply portal icon from the mapping if available
+            const portalIconUrl = getPortalIconUrl(entry.name)
+            if (portalIconUrl) {
+                addLink.icon = { type: 'url', value: portalIconUrl }
+            }
+
             quickLinks(undefined, {
-                addLinks: [{
-                    title: entry.name,
-                    url: entry.url,
-                }],
+                addLinks: [addLink],
             })
 
             item.classList.add('added')
@@ -266,8 +301,16 @@ function getCategories(): string[] {
     // Sort based on known order, then alphabetically for the rest
     const ordered: string[] = []
     const known = [
-        ...CMD_CATEGORY_ORDER,
+        'Microsoft 365',
         'AI',
+        'Azure',
+        'Entra',
+        'Intune',
+        'Defender',
+        'XDR Sentinel',
+        'Purview',
+        'My Pages',
+        'General',
         'Developer',
         'Licensing',
         'Health & Status',

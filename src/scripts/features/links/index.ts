@@ -32,6 +32,7 @@ type AddLinks = {
     title: string
     url: string
     group?: string
+    icon?: LinkIcon
 }[]
 
 type UpdateLink = {
@@ -486,12 +487,18 @@ function linkSubmission(args: SubmitLink | SubmitFolder, data: Sync): Sync {
 
     if (type === 'link') {
         for (const link of args.links) {
-            newlinks.push(validateLink(
+            const validated = validateLink(
                 link.title,
                 link.url,
                 // if no group is specified, adds to the selected one
                 link.group || data.linkgroups.selected,
-            ))
+            )
+
+            if (link.icon) {
+                validated.icon = link.icon
+            }
+
+            newlinks.push(validated)
         }
     }
 

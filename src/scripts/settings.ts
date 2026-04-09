@@ -264,7 +264,7 @@ function initOptionsValues(data: Sync, local: Local): void {
 
     // Link show title
     paramId('b_showtitles').classList.toggle('on', data?.linktitles ?? true)
-    paramId('b_showbackgrounds').classList.toggle('on', data?.linkbackgrounds ?? true)
+    paramId('b_showbackgrounds').classList.toggle('on', data?.linkbackgrounds ?? false)
 
     // Time & main hide elems
     const dateOnly = data.hide?.clock

@@ -78,7 +78,7 @@ export const SYNC_DEFAULT: Sync = {
     time: true,
     main: true,
     dateformat: 'auto',
-    quicklinks: false,
+    quicklinks: true,
     textShadow: 0.2,
     announcements: 'major',
     review: 0,
@@ -86,14 +86,14 @@ export const SYNC_DEFAULT: Sync = {
     hide: {},
     linkstyle: 'medium',
     linktitles: true,
-    linkbackgrounds: true,
+    linkbackgrounds: false,
     linknewtab: false,
     linksrow: 6,
     linkiconradius: 1.1,
     linkgroups: {
-        on: false,
-        selected: 'default',
-        groups: ['default'],
+        on: true,
+        selected: 'Microsoft 365',
+        groups: ['Microsoft 365', 'Admin'],
         pinned: [],
         synced: [],
     },
@@ -150,41 +150,138 @@ export const SYNC_DEFAULT: Sync = {
         layouts: {},
     },
 
-    // Default Microsoft admin portal quick links
+    // Default Microsoft 365 quick links
     linksDefault01: {
         _id: 'linksDefault01',
         order: 0,
-        parent: 'default',
-        title: 'Entra Admin Center',
-        url: 'https://entra.microsoft.com',
+        parent: 'Microsoft 365',
+        title: 'OneDrive',
+        url: 'https://portal.office.com/onedrive',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/OneDrive/OneDrive_512.png',
+        },
     },
     linksDefault02: {
         _id: 'linksDefault02',
         order: 1,
-        parent: 'default',
-        title: 'Intune',
-        url: 'https://intune.microsoft.com',
+        parent: 'Microsoft 365',
+        title: 'Outlook',
+        url: 'https://outlook.cloud.microsoft',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Outlook/Outlook_512.png',
+        },
     },
     linksDefault03: {
         _id: 'linksDefault03',
         order: 2,
-        parent: 'default',
-        title: 'Microsoft 365 Admin',
-        url: 'https://admin.microsoft.com',
+        parent: 'Microsoft 365',
+        title: 'Loop',
+        url: 'https://loop.cloud.microsoft',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Loop/Loop%20icon.png',
+        },
     },
     linksDefault04: {
         _id: 'linksDefault04',
         order: 3,
-        parent: 'default',
-        title: 'Azure Portal',
-        url: 'https://portal.azure.com',
+        parent: 'Microsoft 365',
+        title: 'Copilot',
+        url: 'https://copilot.microsoft.com',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Copilot%20(not%20M365)/Copilot%20(general)%20-%20250x250.png',
+        },
     },
     linksDefault05: {
         _id: 'linksDefault05',
         order: 4,
-        parent: 'default',
-        title: 'Microsoft Defender',
-        url: 'https://security.microsoft.com',
+        parent: 'Microsoft 365',
+        title: 'Power BI',
+        url: 'https://app.powerbi.com',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Power%20Platform/Power%20BI/Power%20BI%20300x300.png',
+        },
+    },
+    linksDefault06: {
+        _id: 'linksDefault06',
+        order: 5,
+        parent: 'Microsoft 365',
+        title: 'To-Do',
+        url: 'https://to-do.office.com',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/To%20Do/To_Do.png',
+        },
+    },
+
+    // Default Admin quick links
+    linksDefault07: {
+        _id: 'linksDefault07',
+        order: 0,
+        parent: 'Admin',
+        title: 'Azure',
+        url: 'https://portal.azure.com',
+        icon: {
+            type: 'url',
+            value: 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Azure/Azure.png',
+        },
+    },
+    linksDefault08: {
+        _id: 'linksDefault08',
+        order: 1,
+        parent: 'Admin',
+        title: 'Entra',
+        url: 'https://entra.microsoft.com',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Entra/Microsoft-Entra-ID-color-icon.png',
+        },
+    },
+    linksDefault09: {
+        _id: 'linksDefault09',
+        order: 2,
+        parent: 'Admin',
+        title: 'Intune',
+        url: 'https://intune.microsoft.com',
+        icon: {
+            type: 'url',
+            value: 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/other/Intune.png',
+        },
+    },
+    linksDefault10: {
+        _id: 'linksDefault10',
+        order: 3,
+        parent: 'Admin',
+        title: 'Exchange',
+        url: 'https://admin.cloud.microsoft/exchange#/homepage',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Exchange/full-color/Exchange_256x256.png',
+        },
+    },
+    linksDefault11: {
+        _id: 'linksDefault11',
+        order: 4,
+        parent: 'Admin',
+        title: 'Microsoft 365 Admin',
+        url: 'https://admin.microsoft.com',
+        icon: {
+            type: 'url',
+            value:
+                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Microsoft%20365%20Admin.png',
+        },
     },
 }
 

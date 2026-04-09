@@ -16,6 +16,13 @@ function keyboardUserActions(event: KeyboardEvent): void {
         const open = isOpen()
         const keyup = event.type === 'keyup'
 
+        // Don't close context menu if a modal dialog (e.g. icon picker) is open on top
+        const topModal = document.querySelector<HTMLDialogElement>('dialog[open]:modal')
+
+        if (topModal) {
+            return
+        }
+
         if (open.contextmenu) {
             document.dispatchEvent(new Event('close-edit'))
         } //
@@ -65,6 +72,7 @@ function clickUserActions(event: MouseEvent): void {
         localfiles: path.some((el) => el.id === 'local_options'),
         interface: pathIds.includes('interface') || pathIds.includes('cmdms') || pathIds.includes('msportals'),
         contextmenu: pathIds.includes('contextmenu'),
+        iconpicker: pathIds.includes('icon-picker'),
         settings: path.some((el) => el.id === 'settings'),
         showsettings: path.some((el) => el.id === 'show-settings'),
         interactable: path.some((el) =>
@@ -90,7 +98,7 @@ function clickUserActions(event: MouseEvent): void {
         document.dispatchEvent(new CustomEvent('toggle-settings'))
     }
 
-    if (open.contextmenu && !on.contextmenu) {
+    if (open.contextmenu && !on.contextmenu && !on.iconpicker) {
         // if (on.addgroup && document.querySelector('.link-title.add-group.selected')) {
         if (on.addgroup) {
             return

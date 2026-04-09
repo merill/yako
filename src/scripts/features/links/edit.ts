@@ -2,6 +2,7 @@ import { getLink, getSelectedIds, isLinkIconType } from './helpers.ts'
 import { closeContextMenu, positionContextMenu } from '../contextmenu.ts'
 import { togglePinGroup } from './groups.ts'
 import { quickLinks } from './index.ts'
+import { openIconPicker } from '../catalog/iconpicker.ts'
 
 import { getComposedPath } from '../../shared/dom.ts'
 import { tradThis } from '../../utils/translations.ts'
@@ -333,6 +334,27 @@ function toggleIconType(iconType: Event | string): void {
     document.getElementById('edit-icon-url')?.classList.toggle('on', iconType === 'url')
     document.getElementById('edit-icon-svg')?.classList.toggle('on', iconType === 'svg')
     document.getElementById('edit-icon-file')?.classList.toggle('on', iconType === 'file')
+
+    // Open icon picker when library type is selected
+    if (iconType === 'library') {
+        const id = editStates?.selected?.[0]
+        const title = domtitle.value
+        const url = domurl.value
+
+        openIconPicker((iconUrl: string) => {
+            // Directly apply the icon change via quickLinks update
+            if (id) {
+                quickLinks(undefined, {
+                    updateLink: {
+                        id,
+                        title,
+                        url,
+                        icon: { type: 'url', value: iconUrl },
+                    },
+                })
+            }
+        })
+    }
 }
 
 function submitChanges(event: SubmitEvent): void {

@@ -58,6 +58,7 @@
                     <span class="trn">Icon</span>
                     <select name="edit-icon" id="e-icon-type">
                         <option value="auto" class="trn">Website favicon</option>
+                        <option value="library" class="trn">Icon library</option>
                         <option value="file" class="trn">Local file</option>
                         <option value="url" class="trn">URL</option>
                     </select>
@@ -708,6 +709,35 @@
                     </div>
                 </div>
                 <div id="catalog-browser-grid"></div>
+            </dialog>
+        </template>
+
+        <template id="icon-picker-template">
+            <dialog id="icon-picker">
+                <div id="icon-picker-header">
+                    <div id="icon-picker-topbar">
+                        <input
+                            type="text"
+                            id="icon-picker-search"
+                            placeholder="Search icons..."
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            maxlength="100"
+                        />
+                        <select id="icon-picker-category">
+                            <option value="All">All categories</option>
+                        </select>
+                        <button id="icon-picker-close" class="btn-red" type="button">Close</button>
+                    </div>
+                </div>
+                <div id="icon-picker-grid">
+                    <div id="icon-picker-loading">
+                        <img src="src/assets/interface/loading.svg" alt="" width="32" height="32" />
+                        <span>Loading icons...</span>
+                    </div>
+                </div>
             </dialog>
         </template>
 
