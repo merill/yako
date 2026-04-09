@@ -8,7 +8,7 @@
 
 <div class="param">
     <div class="newtab-segmented" id="newtab-view-selector">
-        <button data-view="default" class="active">Minimalist</button>
+        <button data-view="default" class="active">Classic</button>
         <button data-view="msportals">MSPortals.io</button>
         <button data-view="cmdms">cmd.ms</button>
     </div>
@@ -615,34 +615,9 @@
         <hr />
 
         <div class="wrapper">
-            <span>
-                <label class="trn">Browse Microsoft portals</label>
-                <button class="tooltip ttcatalog" title="Tips on portal catalog" aria-label="Tips on portal catalog">
-                    ?
-                </button>
-            </span>
+            <label class="trn">Add Microsoft Portal links</label>
+            <button type="button" id="b_open-catalog-browser" class="param-btn trn">Browse</button>
         </div>
-
-        <p class="tooltiptext dropdown ttcatalog">
-            <span class="trn"
-            >Search hundreds of Microsoft admin portals and add them as quick links with one click.</span>
-        </p>
-
-        <div id="catalog-search-wrapper" class="wrapper">
-            <input
-                type="text"
-                id="i_catalog-search"
-                placeholder="Search portals..."
-                aria-label="Search Microsoft portal catalog"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                maxlength="100"
-            />
-        </div>
-
-        <div id="catalog-results"></div>
 
         <hr />
 

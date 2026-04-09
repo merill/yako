@@ -1,4 +1,5 @@
 import { populateDialogWithEditLink } from './links/edit.ts'
+import { openCatalogBrowser } from './catalog/browser.ts'
 import { IS_MOBILE, SYSTEM_OS } from '../defaults.ts'
 import { transitioner } from '../utils/transitioner.ts'
 import { debounce } from '../utils/debounce.ts'
@@ -127,6 +128,7 @@ export function openContextMenu(event: Event): void {
         // add new link button if quick links are enabled
         if (!document.querySelector('#linkblocks.hidden')) {
             populateDialogWithAction('add-new-link')
+            populateDialogWithAction('add-portal-link')
         }
 
         showTheseElements('#background-actions')
@@ -257,6 +259,12 @@ queueMicrotask(() => {
 
     const addNewLinkButton = domdialog.querySelector<HTMLButtonElement>(`[data-action="add-new-link"]`)
     addNewLinkButton?.addEventListener('click', (event) => populateDialogWithEditLink(event, domdialog, true))
+
+    const addPortalLinkButton = domdialog.querySelector<HTMLButtonElement>(`[data-action="add-portal-link"]`)
+    addPortalLinkButton?.addEventListener('click', () => {
+        closeContextMenu()
+        openCatalogBrowser()
+    })
 
     if (SYSTEM_OS === 'ios' || !IS_MOBILE) {
         const handleLongPress = debounce((event: TouchEvent) => {

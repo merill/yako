@@ -47,6 +47,7 @@
 @import './features/cmdms';
 @import './features/msportals';
 @import './features/catalog';
+@import './features/catalogbrowser';
 
 /* <!> Responsive must be imported last */
 @import './_responsive';

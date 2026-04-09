@@ -5,8 +5,7 @@ import { interfacePopup } from './features/popup.ts'
 import { moveElements } from './features/move/index.ts'
 import { hideElements } from './features/hide.ts'
 import { quickLinks } from './features/links/index.ts'
-import { getCatalog } from './features/catalog/index.ts'
-import { getDefaultIcon } from './features/links/helpers.ts'
+import { openCatalogBrowser } from './features/catalog/browser.ts'
 import { cmdmsToggle } from './features/cmdms.ts'
 import { msportalsSetFavorites, msportalsToggle } from './features/msportals.ts'
 import { notes } from './features/notes.ts'
@@ -26,7 +25,7 @@ import { storage } from './storage.ts'
 import { parse } from './utils/parse.ts'
 
 import type { Sync } from '../types/sync.ts'
-import type { CatalogEntry, Local } from '../types/local.ts'
+import type { Local } from '../types/local.ts'
 
 // Initialization
 
@@ -394,8 +393,10 @@ function initOptionsEvents(): void {
         this.classList.remove('valid')
     })
 
-    // Catalog search in settings
-    initCatalogSearch()
+    // Catalog browser button
+    onclickdown(paramId('b_open-catalog-browser'), () => {
+        openCatalogBrowser()
+    })
 
     onclickdown(paramId('i_linkgroups'), (_, target) => {
         quickLinks(undefined, { groups: target.checked })
@@ -1215,136 +1216,6 @@ async function toggleSettingsChangesButtons(action: string): Promise<void> {
         paramId('settings-changes-options')?.classList.add('hidden')
         paramId('settings-files-options')?.classList.remove('hidden')
     }
-}
-
-// Catalog search in Quick Links settings
-
-function initCatalogSearch(): void {
-    const input = document.getElementById('i_catalog-search') as HTMLInputElement | null
-    const results = document.getElementById('catalog-results')
-
-    if (!input || !results) {
-        return
-    }
-
-    let catalogEntries: CatalogEntry[] = []
-    let loaded = false
-
-    async function ensureCatalogLoaded(): Promise<void> {
-        if (!loaded) {
-            catalogEntries = await getCatalog()
-            loaded = true
-        }
-    }
-
-    const handleSearch = debounce(async function (): Promise<void> {
-        await ensureCatalogLoaded()
-        const query = input.value.trim()
-
-        if (!results) {
-            return
-        }
-
-        if (query.length === 0) {
-            results.innerHTML = ''
-            return
-        }
-
-        const tokens = query.toLowerCase().split(/\s+/).filter(Boolean)
-        const matches: { entry: CatalogEntry; score: number }[] = []
-
-        for (const entry of catalogEntries) {
-            const haystack = `${entry.name} ${entry.description} ${entry.keywords} ${entry.category}`.toLowerCase()
-            let allMatch = true
-            let score = 0
-
-            for (const token of tokens) {
-                const index = haystack.indexOf(token)
-                if (index === -1) {
-                    allMatch = false
-                    break
-                }
-                const nameIndex = entry.name.toLowerCase().indexOf(token)
-                if (nameIndex === 0) score += 100
-                else if (nameIndex > 0) score += 50
-                if (entry.category.toLowerCase().includes(token)) score += 20
-            }
-
-            if (allMatch) {
-                matches.push({ entry, score })
-            }
-        }
-
-        matches.sort((a, b) => b.score - a.score)
-        const topResults = matches.slice(0, 8)
-
-        results.innerHTML = ''
-
-        if (topResults.length === 0) {
-            const noRes = document.createElement('div')
-            noRes.className = 'catalog-item'
-            noRes.style.opacity = '0.5'
-            noRes.style.cursor = 'default'
-            noRes.textContent = 'No portals found'
-            results.appendChild(noRes)
-            return
-        }
-
-        for (const { entry } of topResults) {
-            const item = document.createElement('div')
-            item.className = 'catalog-item'
-
-            const img = document.createElement('img')
-            img.src = getDefaultIcon(entry.url)
-            img.alt = ''
-            img.draggable = false
-
-            const textDiv = document.createElement('div')
-            textDiv.className = 'catalog-item-text'
-
-            const nameSpan = document.createElement('span')
-            nameSpan.className = 'catalog-item-name'
-            nameSpan.textContent = entry.name
-
-            const urlSpan = document.createElement('span')
-            urlSpan.className = 'catalog-item-url'
-            urlSpan.textContent = entry.url
-
-            textDiv.appendChild(nameSpan)
-            textDiv.appendChild(urlSpan)
-
-            const catSpan = document.createElement('span')
-            catSpan.className = 'catalog-item-category'
-            catSpan.textContent = entry.category
-
-            const addBtn = document.createElement('button')
-            addBtn.className = 'catalog-item-add'
-            addBtn.textContent = '+ Add'
-            addBtn.type = 'button'
-
-            addBtn.addEventListener('click', (event) => {
-                event.stopPropagation()
-
-                quickLinks(undefined, {
-                    addLinks: [{
-                        title: entry.name,
-                        url: entry.url,
-                    }],
-                })
-
-                addBtn.textContent = 'Added'
-                addBtn.classList.add('added')
-            })
-
-            item.appendChild(img)
-            item.appendChild(textDiv)
-            item.appendChild(catSpan)
-            item.appendChild(addBtn)
-            results.appendChild(item)
-        }
-    }, 200)
-
-    input.addEventListener('input', handleSearch)
 }
 
 //	View selector
