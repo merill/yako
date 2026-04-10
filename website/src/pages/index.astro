@@ -400,6 +400,18 @@ const faqs = [
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
   }
 
+  :global(.dark) .hero-card.revealed {
+    background: rgba(9, 9, 11, 0.9);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:not(.light)) .hero-card.revealed {
+      background: rgba(9, 9, 11, 0.9);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    }
+  }
+
   /* Cursor & selection rect */
   .hero-cursor {
     position: absolute;
@@ -508,6 +520,16 @@ const faqs = [
   .hero-actions .btn img {
     width: 18px;
     height: 18px;
+  }
+
+  :global(.dark) .hero-actions .btn img {
+    filter: invert(1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:not(.light)) .hero-actions .btn img {
+      filter: invert(1);
+    }
   }
 
   .hero-trust {

@@ -16,6 +16,13 @@ const { title, description = 'A new tab page for Microsoft users and admins.' } 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
+    <script is:inline>
+      (function() {
+        var t = localStorage.getItem('yako-theme');
+        if (t === 'dark') document.documentElement.classList.add('dark');
+        else if (t === 'light') document.documentElement.classList.add('light');
+      })();
+    </script>
   </head>
   <body>
     <slot name="nav" />

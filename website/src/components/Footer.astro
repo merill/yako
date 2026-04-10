@@ -33,6 +33,11 @@ const yakoLinks = [
       <span>Built on <a href="https://bonjourr.fr" rel="noreferrer noopener">Bonjourr</a> by Victor Azevedo &amp; Tahoe Beetschen</span>
       <span class="sep" aria-hidden="true">&middot;</span>
       <span><a href="https://github.com/victrme/Bonjourr" rel="noreferrer noopener">Support Bonjourr on GitHub</a></span>
+      <span class="sep" aria-hidden="true">&middot;</span>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
     </div>
   </div>
 </footer>
@@ -118,4 +123,56 @@ const yakoLinks = [
   .footer-bottom a:hover {
     color: var(--color-text);
   }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: color 0.15s;
+    line-height: 0;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-text);
+  }
+
+  /* Show sun in dark mode, moon in light mode */
+  .icon-sun { display: none; }
+  .icon-moon { display: block; }
+
+  :global(.dark) .icon-sun { display: block; }
+  :global(.dark) .icon-moon { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:not(.light)) .icon-sun { display: block; }
+    :global(:not(.light)) .icon-moon { display: none; }
+  }
 </style>
+
+<script>
+  const btn = document.getElementById('theme-toggle')
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const root = document.documentElement
+      const isDark =
+        root.classList.contains('dark') ||
+        (!root.classList.contains('light') &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+      if (isDark) {
+        root.classList.remove('dark')
+        root.classList.add('light')
+        localStorage.setItem('yako-theme', 'light')
+      } else {
+        root.classList.remove('light')
+        root.classList.add('dark')
+        localStorage.setItem('yako-theme', 'dark')
+      }
+    })
+  }
+</script>

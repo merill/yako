@@ -22,7 +22,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --color-bg: #09090b;
     --color-bg-alt: #18181b;
     --color-bg-card: #18181b;
@@ -35,6 +35,20 @@
     --color-border-light: #27272a;
     --color-code-bg: #27272a;
   }
+}
+
+:root.dark {
+  --color-bg: #09090b;
+  --color-bg-alt: #18181b;
+  --color-bg-card: #18181b;
+  --color-text: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-primary: #fafafa;
+  --color-primary-hover: #d4d4d8;
+  --color-border: #27272a;
+  --color-border-light: #27272a;
+  --color-code-bg: #27272a;
 }
 
 *,
