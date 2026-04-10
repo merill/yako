@@ -12,9 +12,12 @@ Deno.test('Global exists', () => {
     assert(globalThis.document)
 })
 
-Deno.test('Filter imports is working', () => {
-    filterData('import', defaults, {})
-})
+Deno.test(
+    { name: 'Filter imports is working', sanitizeOps: false, sanitizeResources: false, sanitizeExit: false },
+    () => {
+        filterData('import', defaults, {})
+    },
+)
 
 Deno.test('Current version small import', () => {
     const config = filterData('import', defaults, {

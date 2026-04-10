@@ -339,23 +339,47 @@ export function analogClockOptions<Data extends Sync | Import>(data: Data): Data
     return data
 }
 
-export function removeLinkgroupDuplicates(current: Sync): Sync {
+export function removeLinkgroupDuplicates(current: Sync, imported: Import): Sync {
     // 1. Remove duplicate
     current.linkgroups.groups = [...new Set(current.linkgroups.groups)]
     current.linkgroups.pinned = [...new Set(current.linkgroups.pinned)]
     current.linkgroups.synced = [...new Set(current.linkgroups.synced)]
 
-    // 2. Remove default from SYNC_DEFAULT
+    // 2. If the import had its own linkgroups, use those instead of the merged result
+    if (imported.linkgroups?.groups) {
+        current.linkgroups.groups = [...new Set(imported.linkgroups.groups as string[])]
+        current.linkgroups.pinned = [...new Set((imported.linkgroups.pinned ?? []) as string[])]
+        current.linkgroups.synced = [...new Set((imported.linkgroups.synced ?? []) as string[])]
+
+        if (imported.linkgroups.selected !== undefined) {
+            current.linkgroups.selected = imported.linkgroups.selected as string
+        }
+
+        if (imported.linkgroups.on !== undefined) {
+            current.linkgroups.on = imported.linkgroups.on as boolean
+        }
+
+        return current
+    }
+
+    // 3. Remove empty groups that came from defaults (no links use them as parent)
 
     const links = bundleLinks(current)
-    const parents = links.map((l) => l.parent)
-    const defaultGroupAsParent = parents.some((parent) => parent === 'default')
+    const parents = new Set(links.map((l) => l.parent))
     const multipleGroups = current.linkgroups.groups.length > 1
 
-    if (multipleGroups && !defaultGroupAsParent) {
-        current.linkgroups.groups = current.linkgroups.groups.filter((item) => item !== 'default')
-        current.linkgroups.pinned = current.linkgroups.pinned.filter((item) => item !== 'default')
-        current.linkgroups.synced = current.linkgroups.synced.filter((item) => item !== 'default')
+    if (multipleGroups) {
+        const nonEmptyGroups = current.linkgroups.groups.filter((group) => parents.has(group))
+
+        if (nonEmptyGroups.length > 0) {
+            current.linkgroups.groups = nonEmptyGroups
+            current.linkgroups.pinned = current.linkgroups.pinned.filter((item) => nonEmptyGroups.includes(item))
+            current.linkgroups.synced = current.linkgroups.synced.filter((item) => nonEmptyGroups.includes(item))
+
+            if (!nonEmptyGroups.includes(current.linkgroups.selected)) {
+                current.linkgroups.selected = nonEmptyGroups[0]
+            }
+        }
     }
 
     return current
