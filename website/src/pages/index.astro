@@ -124,15 +124,20 @@ const faqs = [
 
           <div class="hero-actions">
             <a href="/docs/install/" class="btn btn-primary">
-              Install for free
+              <img src="/icons/edge.svg" alt="" width="18" height="18" />
+              Add to Edge
             </a>
-            <a href="#features" class="btn btn-secondary">
-              See features
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <a href="/docs/install/" class="btn btn-primary">
+              <img src="/icons/chrome.svg" alt="" width="18" height="18" />
+              Add to Chrome
+            </a>
+            <a href="/docs/install/" class="btn btn-primary">
+              <img src="/icons/firefox.svg" alt="" width="18" height="18" />
+              Add to Firefox
             </a>
           </div>
 
-          <p class="hero-trust">Free &middot; Open source &middot; No data collection &middot; Edge, Chrome, Firefox</p>
+          <p class="hero-trust">Free &middot; Open source &middot; No data collection</p>
         </div>
       </div>
     </div>
@@ -407,6 +412,11 @@ const faqs = [
     padding: 14px 24px;
     border-radius: var(--radius);
     font-size: 0.9rem;
+  }
+
+  .hero-actions .btn img {
+    width: 18px;
+    height: 18px;
   }
 
   .hero-trust {
