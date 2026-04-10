@@ -162,7 +162,7 @@ function createHelpModeDisplay() {
         resetBtn.disabled = false
     }
 
-    function setServerStatus(statusID, resp) {
+    function _setServerStatus(statusID, resp) {
         const endTimer = Math.round(globalThis.performance.now() - startTimer)
         const text = resp.ok ? ` · ${endTimer}ms` : resp.status
         container.querySelector(`#${statusID}`).textContent = text

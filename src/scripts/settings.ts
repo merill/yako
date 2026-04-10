@@ -1,7 +1,5 @@
 import { darkmode, favicon, pageControl, tabTitle, textShadow } from './features/others.ts'
 import { backgroundUpdate, initBackgroundOptions, toggleMuteStatus } from './features/backgrounds/index.ts'
-import { changeGroupTitle } from './features/links/groups.ts'
-import { interfacePopup } from './features/popup.ts'
 import { moveElements } from './features/move/index.ts'
 import { hideElements } from './features/hide.ts'
 import { isLink } from './features/links/helpers.ts'
@@ -157,7 +155,7 @@ function settingsToggle(event?: CustomEvent): void {
     document.dispatchEvent(new Event('close-edit'))
 }
 
-function initOptionsValues(data: Sync, local: Local): void {
+function initOptionsValues(data: Sync, _local: Local): void {
     const domsettings = document.getElementById('settings') as HTMLElement
 
     setInput('i_blur', data.backgrounds.blur ?? 15)
@@ -342,7 +340,7 @@ function initOptionsEvents(): void {
     }
 
     // msportals.io settings
-    paramId('i_msportals-favorites').addEventListener('change', function (this: HTMLInputElement) {
+    paramId('i_msportals-favorites').addEventListener('change', function (this: HTMLInputElement): void {
         msportalsSetFavorites(this.checked)
         paramId('msportals-favorites-options')?.classList.toggle('shown', this.checked)
     })
@@ -1360,7 +1358,7 @@ function setInput(id: string, val: string | number): void {
     input.value = typeof val === 'string' ? val : val?.toString()
 }
 
-function setFormInput(id: string, defaults: string, value?: string): void {
+function _setFormInput(id: string, defaults: string, value?: string): void {
     const input = paramId(id) as HTMLInputElement
 
     if (value) {

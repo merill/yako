@@ -12,7 +12,7 @@ const ICON_BASE_URL = 'https://raw.githubusercontent.com/loryanstrant/MicrosoftC
 // ─── Constants ───
 
 // Category grouping order derived from cmd.ms CATEGORY_ORDER
-const CMD_CATEGORY_ORDER = [
+const _CMD_CATEGORY_ORDER = [
     'Entra',
     'Intune',
     'Defender',

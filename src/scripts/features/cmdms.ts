@@ -51,7 +51,7 @@ const PINNED_COMMANDS = [
 let allCommands: CmdCommand[] = []
 let filtered: CmdCommand[] = []
 let selectedIdx = 0
-let hoveredIdx = -1
+let _hoveredIdx = -1
 let sortCol: 'command' | 'name' | 'alias' | null = null
 let sortDir: 'asc' | 'desc' = 'asc'
 let isActive = false
@@ -520,11 +520,11 @@ function renderTable(): void {
 
         row.addEventListener('click', () => handleRowClick(i))
         row.addEventListener('mouseenter', () => {
-            hoveredIdx = i
+            _hoveredIdx = i
             row.classList.add('cmdms-row-hover')
         })
         row.addEventListener('mouseleave', () => {
-            hoveredIdx = -1
+            _hoveredIdx = -1
             row.classList.remove('cmdms-row-hover')
         })
 
@@ -551,7 +551,7 @@ function handleRowClick(idx: number): void {
     selectedIdx = idx
     const url = filtered[idx]?.url
     if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer')
+        globalThis.open(url, '_blank', 'noopener,noreferrer')
     }
 }
 
@@ -598,7 +598,7 @@ function handleKeydown(e: KeyboardEvent): void {
         e.preventDefault()
         if (selectedIdx >= 0 && selectedIdx < filtered.length) {
             const url = filtered[selectedIdx].url
-            if (url) window.open(url, '_blank', 'noopener,noreferrer')
+            if (url) globalThis.open(url, '_blank', 'noopener,noreferrer')
         }
         return
     }
