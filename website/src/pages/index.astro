@@ -103,6 +103,35 @@ const faqs = [
 ---
 
 <Base title="Yako - A beautiful browser start page for Microsoft users and admins">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "Yako",
+          "url": "https://getyako.com",
+          "description": "A beautiful browser start page for Microsoft users and admins. Instantly access 900+ Microsoft portals and blades right from your new tab page.",
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Yako",
+          "applicationCategory": "BrowserApplication",
+          "operatingSystem": "Windows, macOS, Linux",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "description": "A beautiful browser start page for Microsoft users and admins. Instantly access 900+ Microsoft portals and blades right from your new tab page.",
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.q,
+            "acceptedAnswer": { "@type": "Answer", "text": faq.a },
+          })),
+        },
+      ],
+    })} />
+  </Fragment>
   <Nav slot="nav" />
 
   <!-- Hero -->

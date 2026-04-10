@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getyako.com/sitemap-index.xml

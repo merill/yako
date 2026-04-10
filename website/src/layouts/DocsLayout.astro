@@ -23,6 +23,7 @@ const sidebarLinks = [
 ---
 
 <Base title={title} description={description}>
+  <slot name="head" slot="head" />
   <Nav slot="nav" />
 
   <div class="docs-layout">
