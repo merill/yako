@@ -8,15 +8,15 @@ const faqs = [
   },
   {
     q: 'Does Yako collect any data?',
-    a: 'No. Yako makes no external API calls, collects no data, has no account system, and requires only the storage permission. All portal data is bundled locally.',
+    a: 'No. Yako collects no data, has no account system, and requires only the storage permission. It fetches portal data from GitHub to stay up to date, but no personal information is sent.',
   },
   {
     q: 'What browsers does Yako support?',
     a: 'Yako supports Microsoft Edge, Google Chrome, and Firefox. It also works on Chromium-based browsers like Brave.',
   },
   {
-    q: 'Can I sync my settings across devices?',
-    a: 'Yes. Yako stores settings in your browser\'s built-in sync storage, so your configuration syncs automatically if you have browser sync enabled.',
+    q: 'Can I save and restore my settings?',
+    a: 'Yes. You can export your settings as a JSON file from the Settings panel, and import them on any device to restore your configuration.',
   },
   {
     q: 'How do I reset Yako to default settings?',
@@ -24,15 +24,11 @@ const faqs = [
   },
   {
     q: 'Where does the portal data come from?',
-    a: 'Portal data is sourced from two community projects: merill/cmd (cmd.ms shortcuts) and msportals.io. The data is bundled locally with the extension — no network requests are made.',
+    a: 'Portal data is sourced from two community projects: merill/cmd (cmd.ms shortcuts) and msportals.io. The extension fetches the latest data from their GitHub repositories to keep portals up to date.',
   },
   {
     q: 'Can I add my own links?',
     a: 'Yes. You can add custom links manually, or browse the built-in catalog of Microsoft portals and add them with one click.',
-  },
-  {
-    q: 'How do I share my Yako setup?',
-    a: 'Export your settings from the Settings panel, take a screenshot, and submit a theme via Pull Request. See the Contribute page for details.',
   },
   {
     q: 'Is Yako based on another project?',

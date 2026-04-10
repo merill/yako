@@ -122,7 +122,7 @@
 /* Dropdowns: Quicklinks, Notes, and Quotes Options */
 
 #quicklinks_options.shown {
-    max-height: 423px;
+    max-height: 530px;
 }
 
 #notes_options.shown {
@@ -182,7 +182,7 @@
 }
 
 .all .as_link {
-    max-height: 360px;
+    max-height: 400px;
 }
 
 .all .as_collection {

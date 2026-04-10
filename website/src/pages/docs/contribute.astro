@@ -19,43 +19,6 @@ import DocsLayout from '../../layouts/DocsLayout.astro'
     <li>Screenshots or screen recordings if possible</li>
   </ul>
 
-  <h2>Submit a Theme</h2>
-  <p>
-    Share your customized Yako setup with the community! Themes are displayed on the
-    <a href="/themes/">Themes</a> gallery page.
-  </p>
-
-  <h3>How to submit</h3>
-  <ol>
-    <li>Customize Yako to your liking</li>
-    <li>Take a screenshot of your new tab page</li>
-    <li>Export your settings from the Settings panel (Settings Management &rarr; Export)</li>
-    <li>Fork the <a href="https://github.com/merill/yako" rel="noreferrer noopener">Yako repository</a></li>
-    <li>Create a new folder under <code>website/src/content/themes/</code> with a short slug name (e.g. <code>dark-admin</code>)</li>
-    <li>
-      Add three files to your folder:
-      <ul>
-        <li><code>index.md</code> — metadata (see template below)</li>
-        <li><code>screenshot.png</code> — your screenshot image</li>
-        <li><code>settings.json</code> — your exported Yako settings</li>
-      </ul>
-    </li>
-    <li>Open a Pull Request</li>
-  </ol>
-
-  <h3>index.md template</h3>
-  <pre><code>{`---
-title: "My Cool Theme"
-description: "A short description of your theme"
-author: "Your Name"
-linkedin: "https://linkedin.com/in/yourprofile"
-date: ${new Date().toISOString().split('T')[0]}
----`}</code></pre>
-  <p>
-    The <code>linkedin</code> field is optional. If provided, your name will link to your LinkedIn profile
-    on the themes page.
-  </p>
-
   <h2>Contribute Code</h2>
   <p>
     Yako is open source under GPL-3.0. To contribute code:

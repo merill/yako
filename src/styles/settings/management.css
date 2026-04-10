@@ -85,3 +85,15 @@
 #reset-first.shown {
     display: flex;
 }
+
+/* Remove all links */
+
+#removelinks-conf,
+#removelinks-first {
+    display: none;
+}
+
+#removelinks-conf.shown,
+#removelinks-first.shown {
+    display: flex;
+}

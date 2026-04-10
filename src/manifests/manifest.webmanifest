@@ -1,6 +1,6 @@
 {
 	"name": "Yako",
-	"description": "A new tab page for Microsoft users and admins. Quick access to all your Microsoft portals.",
+	"description": "A beautiful browser start page for Microsoft users and admins. Quick access to all your Microsoft portals.",
 	"theme_color": "#ffffff",
 	"background_color": "#222222",
 	"display": "standalone",
