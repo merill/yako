@@ -3,16 +3,13 @@
     font-size: 14px;
     margin: 50px auto 100px;
     color: var(--color-light-text);
+    text-align: center;
 }
 
 @supports (-webkit-touch-callout: none) {
     #settings-footer {
         margin-bottom: 150px;
     }
-}
-
-#settings-footer > div:first-child {
-    text-align: center;
 }
 
 #settings-footer svg {
@@ -32,6 +29,89 @@
     opacity: 0.8;
 }
 
-#settings-footer-links + div {
+/* ─── Credits Section ─── */
+#settings-footer-credits {
+    margin: 1.5em 0 0;
+    padding: 1em 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.settings-footer-heading {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-placeholder);
+    margin-bottom: 0.5em;
+}
+
+.settings-footer-credit-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 0;
+}
+
+.settings-footer-credit-row a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-light-text);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.settings-footer-credit-row a:hover {
+    color: var(--color-blue);
+    text-decoration: none;
+}
+
+.settings-footer-dot {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-placeholder);
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+/* ─── Based On Section ─── */
+#settings-footer-based-on {
+    margin: 0;
+    padding: 1em 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.settings-footer-bonjourr-name a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-light-text);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.settings-footer-bonjourr-name a:hover {
+    color: var(--color-blue);
+}
+
+.settings-footer-bonjourr-note {
+    margin-top: 0.4em;
+    font-size: 12px;
+    color: var(--color-placeholder);
+}
+
+.settings-footer-bonjourr-note a {
+    color: var(--color-blue);
+    text-decoration: none;
+}
+
+.settings-footer-bonjourr-note a:hover {
+    text-decoration: underline;
+}
+
+/* ─── Attribution ─── */
+#settings-footer-based-on + div {
     margin-top: 1.5em;
 }

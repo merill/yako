@@ -29,7 +29,7 @@ const features = [
   {
     label: 'MSPortals.io view',
     title: 'MSPortals.io, right in your browser',
-    description: 'Love msportals.io? Set it as your default new tab view and get the full searchable directory of every Microsoft admin portal you already know and love.',
+    description: 'Love MSPortals.io? Set it as your default new tab view and get the full searchable directory of every Microsoft admin portal you already know and love.',
     image: '/landing/feature-4.webp',
     alt: 'MSPortals.io directory view as default new tab',
   },
@@ -97,7 +97,7 @@ const faqs = [
   },
   {
     q: 'Where does the portal data come from?',
-    a: 'Portal data is sourced from two community projects: merill/cmd (cmd.ms shortcuts) and msportals.io. The extension fetches the latest data from their GitHub repositories to keep portals up to date.',
+    a: 'Portal data is sourced from two community projects: merill/cmd (cmd.ms shortcuts) and MSPortals.io. The extension fetches the latest data from their GitHub repositories to keep portals up to date.',
   },
   {
     q: 'Is Yako a Microsoft product?',
@@ -253,7 +253,7 @@ const faqs = [
       </p>
       <p>
         Bonjourr is a fantastic project on its own. If you don't need the Microsoft-specific
-        features like portal search, msportals.io and cmd.ms views, we recommend using
+        features like portal search, MSPortals.io and cmd.ms views, we recommend using
         <a href="https://bonjourr.fr" rel="noreferrer noopener">Bonjourr</a> directly as a
         beautiful, minimalist start page. If you enjoy Yako, please consider supporting the
         original Bonjourr project too &mdash; star their repo, contribute code, or spread the word.
@@ -276,20 +276,23 @@ const faqs = [
       <h2>🦘 Aussie powered</h2>
       <p class="aussie-subtitle">Yako is built on the shoulders of two brilliant Australian open source projects.</p>
       <div class="aussie-grid">
-        <a href="https://github.com/adamfowlerit/msportals.io" class="aussie-card" rel="noreferrer noopener">
+        <div class="aussie-card">
           <div class="aussie-card-header">
-            <img src="https://msportals.io/favicon.ico" alt="" width="32" height="32" class="aussie-logo" />
-            <h3>msportals.io</h3>
+            <img src="/logos/msportals.png" alt="" width="32" height="32" class="aussie-logo" />
+            <h3>MSPortals.io</h3>
           </div>
           <p>
-            Thanks to the collaboration with <strong>Adam Fowler</strong>, the full msportals.io directory
+            Thanks to the collaboration with <strong>Adam Fowler</strong>, the full MSPortals.io directory
             is available right inside the extension as a new tab view.
           </p>
-          <span class="aussie-link">View on GitHub &rarr;</span>
-        </a>
-        <a href="https://github.com/loryanstrant/MicrosoftCloudLogos" class="aussie-card" rel="noreferrer noopener">
+          <div class="aussie-links">
+            <a href="https://msportals.io" rel="noreferrer noopener" class="aussie-link">Visit MSPortals.io &rarr;</a>
+            <a href="https://github.com/adamfowlerit/msportals.io" rel="noreferrer noopener" class="aussie-link">GitHub &rarr;</a>
+          </div>
+        </div>
+        <div class="aussie-card">
           <div class="aussie-card-header">
-            <img src="https://www.mscloudlogos.com/favicon.ico" alt="" width="32" height="32" class="aussie-logo" />
+            <img src="/logos/mscloudlogos.svg" alt="" width="32" height="32" class="aussie-logo" />
             <h3>Microsoft Cloud Logos</h3>
           </div>
           <p>
@@ -297,8 +300,11 @@ const faqs = [
             comprehensive collection of all Microsoft logos and icons at
             <strong>mscloudlogos.com</strong>.
           </p>
-          <span class="aussie-link">View on GitHub &rarr;</span>
-        </a>
+          <div class="aussie-links">
+            <a href="https://www.mscloudlogos.com/" rel="noreferrer noopener" class="aussie-link">Visit mscloudlogos.com &rarr;</a>
+            <a href="https://github.com/loryanstrant/MicrosoftCloudLogos" rel="noreferrer noopener" class="aussie-link">GitHub &rarr;</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1081,15 +1087,20 @@ const faqs = [
     margin: 0;
   }
 
+  .aussie-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
   .aussie-link {
-    display: inline-block;
-    margin-top: 12px;
     font-size: 0.8rem;
     font-weight: 500;
     color: var(--color-text);
+    text-decoration: none;
   }
 
-  .aussie-card:hover .aussie-link {
+  .aussie-link:hover {
     text-decoration: underline;
     text-underline-offset: 2px;
   }
