@@ -99,6 +99,10 @@ const faqs = [
     q: 'Where does the portal data come from?',
     a: 'Portal data is sourced from two community projects: merill/cmd (cmd.ms shortcuts) and msportals.io. The extension fetches the latest data from their GitHub repositories to keep portals up to date.',
   },
+  {
+    q: 'Is Yako a Microsoft product?',
+    a: 'No. Yako is not a Microsoft product or service. It is an independent, community-driven open source project built by Microsoft community members.',
+  },
 ]
 ---
 
@@ -236,24 +240,6 @@ const faqs = [
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="faq-section">
-    <div class="faq-container">
-      <h2>Frequently asked questions</h2>
-      <div class="faq-list">
-        {faqs.map(faq => (
-          <details class="faq-item">
-            <summary>
-              <span>{faq.q}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-            </summary>
-            <p set:html={faq.a} />
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Built on Bonjourr -->
   <section class="bonjourr-section">
     <div class="container bonjourr-inner">
@@ -277,6 +263,39 @@ const faqs = [
         <a href="https://github.com/victrme/Bonjourr" class="btn btn-secondary" rel="noreferrer noopener">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
           Star Bonjourr on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aussie Powered -->
+  <section class="aussie-section">
+    <div class="container aussie-inner">
+      <h2>🦘 Aussie powered</h2>
+      <p class="aussie-subtitle">Yako is built on the shoulders of two brilliant Australian open source projects.</p>
+      <div class="aussie-grid">
+        <a href="https://github.com/adamfowlerit/msportals.io" class="aussie-card" rel="noreferrer noopener">
+          <div class="aussie-card-header">
+            <img src="https://msportals.io/favicon.ico" alt="" width="32" height="32" class="aussie-logo" />
+            <h3>msportals.io</h3>
+          </div>
+          <p>
+            Thanks to the collaboration with <strong>Adam Fowler</strong>, the full msportals.io directory
+            is available right inside the extension as a new tab view.
+          </p>
+          <span class="aussie-link">View on GitHub &rarr;</span>
+        </a>
+        <a href="https://github.com/loryanstrant/MicrosoftCloudLogos" class="aussie-card" rel="noreferrer noopener">
+          <div class="aussie-card-header">
+            <img src="https://www.mscloudlogos.com/favicon.ico" alt="" width="32" height="32" class="aussie-logo" />
+            <h3>Microsoft Cloud Logos</h3>
+          </div>
+          <p>
+            The quick link icons would not be possible without <strong>Loryan Strant's</strong>
+            comprehensive collection of all Microsoft logos and icons at
+            <strong>mscloudlogos.com</strong>.
+          </p>
+          <span class="aussie-link">View on GitHub &rarr;</span>
         </a>
       </div>
     </div>
@@ -320,6 +339,24 @@ const faqs = [
           <h3>Lokka</h3>
           <p>The first MCP Server for Microsoft Graph. Built for agentic AI workloads.</p>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="faq-container">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        {faqs.map(faq => (
+          <details class="faq-item">
+            <summary>
+              <span>{faq.q}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </summary>
+            <p set:html={faq.a} />
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -949,6 +986,110 @@ const faqs = [
     justify-content: center;
     gap: 12px;
     margin-top: 32px;
+  }
+
+  /* ========================================
+     Aussie Powered
+     ======================================== */
+  .aussie-section {
+    padding: 0 0 96px;
+  }
+
+  @media (min-width: 640px) {
+    .aussie-section {
+      padding: 0 0 128px;
+    }
+  }
+
+  .aussie-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .aussie-inner h2 {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .aussie-inner h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .aussie-subtitle {
+    margin-top: 8px;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .aussie-grid {
+    display: grid;
+    gap: 1px;
+    margin-top: 32px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-border);
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .aussie-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .aussie-card {
+    background: var(--color-bg);
+    padding: 24px;
+    text-decoration: none;
+    text-align: left;
+    transition: background-color 0.15s;
+  }
+
+  .aussie-card:hover {
+    background: var(--color-bg-alt);
+    text-decoration: none;
+  }
+
+  .aussie-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .aussie-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+
+  .aussie-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .aussie-card p {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .aussie-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .aussie-card:hover .aussie-link {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   /* ========================================

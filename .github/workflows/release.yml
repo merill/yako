@@ -1,0 +1,102 @@
+name: release
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - uses: ./.github/actions/deno
+
+            - name: Extract version from tag
+              id: version
+              run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+            - name: Update version in manifests
+              run: |
+                  VERSION="${{ steps.version.outputs.version }}"
+                  for f in src/manifests/chrome.json src/manifests/edge.json src/manifests/firefox.json src/manifests/safari.json; do
+                      jq --arg v "$VERSION" '.version = $v' "$f" > tmp.json && mv tmp.json "$f"
+                  done
+
+            - name: Update version in settings.html
+              run: |
+                  VERSION="${{ steps.version.outputs.version }}"
+                  sed -i "s|>0.0.0</a>|>${VERSION}</a>|g" src/settings.html
+
+            - name: Build all platforms
+              run: deno run build
+
+            - name: Package browser ZIPs
+              run: |
+                  mkdir -p dist
+                  for platform in chrome edge firefox safari; do
+                      if [ -d "release/$platform" ]; then
+                          cd "release/$platform"
+                          zip -r "../../dist/yako-${platform}-v${{ steps.version.outputs.version }}.zip" .
+                          cd ../..
+                      fi
+                  done
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  name: Yako v${{ steps.version.outputs.version }}
+                  files: dist/*.zip
+                  body: |
+                      ## Yako v${{ steps.version.outputs.version }}
+
+                      ### Downloads
+
+                      | Browser | File |
+                      |---------|------|
+                      | Microsoft Edge | `yako-edge-v${{ steps.version.outputs.version }}.zip` |
+                      | Google Chrome | `yako-chrome-v${{ steps.version.outputs.version }}.zip` |
+                      | Mozilla Firefox | `yako-firefox-v${{ steps.version.outputs.version }}.zip` |
+                      | Safari | `yako-safari-v${{ steps.version.outputs.version }}.zip` |
+
+                      ---
+
+                      ### Installation instructions
+
+                      #### Microsoft Edge
+
+                      1. Download `yako-edge-v${{ steps.version.outputs.version }}.zip` and extract it to a folder
+                      2. Open Edge and go to `edge://extensions/`
+                      3. Enable **Developer mode** (toggle in the bottom-left)
+                      4. Click **Load unpacked** and select the extracted folder
+                      5. Open a new tab to see Yako
+
+                      #### Google Chrome
+
+                      1. Download `yako-chrome-v${{ steps.version.outputs.version }}.zip` and extract it to a folder
+                      2. Open Chrome and go to `chrome://extensions/`
+                      3. Enable **Developer mode** (toggle in the top-right)
+                      4. Click **Load unpacked** and select the extracted folder
+                      5. Open a new tab to see Yako
+
+                      #### Mozilla Firefox
+
+                      1. Download `yako-firefox-v${{ steps.version.outputs.version }}.zip`
+                      2. Open Firefox and go to `about:debugging#/runtime/this-firefox`
+                      3. Click **Load Temporary Add-on…**
+                      4. Select the downloaded `.zip` file (no need to extract)
+                      5. Open a new tab to see Yako
+
+                      > **Note:** Temporary add-ons in Firefox are removed when the browser is closed. For a permanent install, the extension needs to be signed via [addons.mozilla.org](https://addons.mozilla.org).
+
+                      #### Safari
+
+                      1. Download `yako-safari-v${{ steps.version.outputs.version }}.zip` and extract it to a folder
+                      2. Safari extensions require an Xcode project wrapper. See Apple's [guide on converting web extensions](https://developer.apple.com/documentation/safariservices/converting-a-web-extension-for-safari) for details
+                      3. Run `xcrun safari-web-extension-converter` on the extracted folder to generate an Xcode project
+                      4. Build and run the project in Xcode, then enable the extension in Safari → Settings → Extensions
