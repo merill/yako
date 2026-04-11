@@ -494,7 +494,23 @@ function renderTable(): void {
 
         const colCmd = document.createElement('span')
         colCmd.className = 'cmdms-col-cmd'
-        colCmd.textContent = ' ' + pad(cmd.command + '.cmd.ms', COL_CMD)
+
+        const cmdText = document.createElement('span')
+        cmdText.textContent = ' ' + cmd.command
+
+        const cmdSuffix = document.createElement('span')
+        cmdSuffix.className = 'cmdms-col-cmd-suffix'
+        cmdSuffix.textContent = '.cmd.ms'
+
+        colCmd.appendChild(cmdText)
+        colCmd.appendChild(cmdSuffix)
+
+        const padLength = COL_CMD - (cmd.command + '.cmd.ms').length
+        if (padLength > 0) {
+            const padSpan = document.createElement('span')
+            padSpan.textContent = ' '.repeat(padLength)
+            colCmd.appendChild(padSpan)
+        }
 
         const gap1 = document.createElement('span')
         gap1.className = 'cmdms-col-gap'

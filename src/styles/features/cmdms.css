@@ -226,6 +226,10 @@
     color: var(--cmdms-accent-yellow) !important;
 }
 
+.cmdms-row-selected .cmdms-col-cmd-suffix {
+    color: color-mix(in srgb, var(--cmdms-accent-yellow) 35%, transparent) !important;
+}
+
 .cmdms-row-selected .cmdms-col-name {
     color: #fff !important;
 }
@@ -241,6 +245,10 @@
 /* Column colors */
 .cmdms-col-cmd {
     color: var(--cmdms-accent-yellow);
+}
+
+.cmdms-col-cmd-suffix {
+    color: color-mix(in srgb, var(--cmdms-accent-yellow) 35%, transparent);
 }
 
 .cmdms-col-name {
