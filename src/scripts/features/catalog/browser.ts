@@ -256,7 +256,7 @@ function createItemTile(entry: CatalogEntry): HTMLDivElement {
                 quickLinks(undefined, { deleteLinks: [id] })
             }
 
-            item.classList.remove('added')
+            item.classList.remove('added', 'just-added')
         } else {
             const addLink: { title: string; url: string; icon?: LinkIcon } = {
                 title: entry.name,
@@ -273,7 +273,8 @@ function createItemTile(entry: CatalogEntry): HTMLDivElement {
                 addLinks: [addLink],
             })
 
-            item.classList.add('added')
+            item.classList.add('added', 'just-added')
+            setTimeout(() => item.classList.remove('just-added'), 400)
         }
     })
 
