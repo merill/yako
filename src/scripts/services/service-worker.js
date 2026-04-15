@@ -9,7 +9,7 @@ if (globalThis.chrome) {
 }
 
 const CACHE_KEY = '1.0.0'
-const API_URLS = ['raw.githubusercontent.com']
+const API_URLS = ['getyako.com/data/']
 
 // Web Extension
 

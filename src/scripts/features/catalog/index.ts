@@ -2,9 +2,9 @@ import { storage } from '../../storage.ts'
 
 import type { CatalogCache, CatalogEntry } from '../../../types/local.ts'
 
-const CMD_CSV_URL = 'https://raw.githubusercontent.com/merill/cmd/main/website/config/commands.csv'
+const CMD_CSV_URL = 'https://getyako.com/data/commands.csv'
 
-const MSPORTALS_BASE = 'https://raw.githubusercontent.com/adamfowlerit/msportals.io/master/_data/portals/'
+const MSPORTALS_BASE = 'https://getyako.com/data/portals/'
 
 const MSPORTALS_FILES = [
     'admin.json',

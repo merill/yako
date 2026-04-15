@@ -1,0 +1,78 @@
+name: sync-upstream
+
+# Check upstream repos for changes every hour
+# Triggers a Cloudflare Pages deploy hook only when new commits are detected
+on:
+    schedule:
+        - cron: '17 * * * *' # Every hour at :17 (offset avoids the :00 rush)
+    workflow_dispatch: # Manual trigger
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Restore cached SHAs
+              uses: actions/cache/restore@v4
+              with:
+                  path: upstream-shas.json
+                  key: upstream-shas
+
+            - name: Read previous SHAs
+              id: prev
+              run: |
+                  if [ -f upstream-shas.json ]; then
+                      cat upstream-shas.json
+                      echo "shas=$(cat upstream-shas.json)" >> "$GITHUB_OUTPUT"
+                  else
+                      echo 'shas={}' >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Fetch latest upstream commit SHAs
+              id: fetch
+              run: |
+                  # Accept: sha header returns just the SHA string (40 chars), no JSON parsing needed
+                  LOGOS=$(curl -sf -H "Accept: application/vnd.github.sha" \
+                      https://api.github.com/repos/loryanstrant/MicrosoftCloudLogos/commits/main)
+
+                  CMD=$(curl -sf -H "Accept: application/vnd.github.sha" \
+                      https://api.github.com/repos/merill/cmd/commits/main)
+
+                  MSPORTALS=$(curl -sf -H "Accept: application/vnd.github.sha" \
+                      https://api.github.com/repos/adamfowlerit/msportals.io/commits/master)
+
+                  CURRENT="{\"logos\":\"${LOGOS}\",\"cmd\":\"${CMD}\",\"msportals\":\"${MSPORTALS}\"}"
+
+                  echo "shas=${CURRENT}" >> "$GITHUB_OUTPUT"
+                  echo "${CURRENT}" > upstream-shas.json
+
+                  echo "Current SHAs: ${CURRENT}"
+
+            - name: Check for changes
+              id: diff
+              run: |
+                  if [ '${{ steps.prev.outputs.shas }}' = '${{ steps.fetch.outputs.shas }}' ]; then
+                      echo "changed=false" >> "$GITHUB_OUTPUT"
+                      echo "No upstream changes"
+                  else
+                      echo "changed=true" >> "$GITHUB_OUTPUT"
+                      echo "Upstream changes detected"
+                  fi
+
+            - name: Update cached SHAs
+              if: steps.diff.outputs.changed == 'true'
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: gh cache delete upstream-shas --repo "${{ github.repository }}" || true
+
+            - name: Save new SHAs
+              if: steps.diff.outputs.changed == 'true'
+              uses: actions/cache/save@v4
+              with:
+                  path: upstream-shas.json
+                  key: upstream-shas
+
+            - name: Trigger Cloudflare Pages rebuild
+              if: steps.diff.outputs.changed == 'true'
+              run: |
+                  curl -sf -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}"
+                  echo "Cloudflare deploy hook triggered"

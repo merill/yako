@@ -1,7 +1,7 @@
 import { getHTMLTemplate } from '../../shared/dom.ts'
 
-const ICON_BASE_URL = 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/'
-const TREE_API_URL = 'https://api.github.com/repos/loryanstrant/MicrosoftCloudLogos/git/trees/main?recursive=1'
+const ICON_BASE_URL = 'https://getyako.com/icons/microsoft-cloud-logos/'
+const TREE_MANIFEST_URL = 'https://getyako.com/icons/microsoft-cloud-logos-tree.json'
 const CACHE_KEY = 'icon-picker-tree-v3'
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
@@ -135,30 +135,28 @@ async function loadIconTree(): Promise<IconEntry[]> {
 }
 
 async function fetchIconTree(): Promise<IconEntry[]> {
-    const response = await fetch(TREE_API_URL)
+    const response = await fetch(TREE_MANIFEST_URL)
 
     if (!response.ok) {
-        console.warn('Icon picker: failed to fetch tree, status', response.status)
+        console.warn('Icon picker: failed to fetch tree manifest, status', response.status)
         return []
     }
 
     const data = await response.json()
-    const tree = data.tree as { path: string; type: string }[]
+    const files = data.files as string[]
     const all: IconEntry[] = []
 
-    for (const item of tree) {
-        if (item.type !== 'blob') continue
-
-        const lower = item.path.toLowerCase()
+    for (const filePath of files) {
+        const lower = filePath.toLowerCase()
         if (!lower.endsWith('.png') && !lower.endsWith('.svg')) continue
 
         // Skip legacy/devcontainer/github files
         if (lower.startsWith('zzlegacy') || lower.startsWith('.')) continue
 
-        const category = extractCategory(item.path)
-        const name = extractName(item.path)
+        const category = extractCategory(filePath)
+        const name = extractName(filePath)
 
-        all.push({ path: item.path, name, category })
+        all.push({ path: filePath, name, category })
     }
 
     return deduplicateIcons(all)

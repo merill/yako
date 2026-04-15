@@ -32,7 +32,7 @@
     ],
     "host_permissions": [
         "https://services.bonjourr.fr/*",
-        "https://raw.githubusercontent.com/*"
+        "https://getyako.com/*"
     ],
     "browser_specific_settings": {
         "gecko": {

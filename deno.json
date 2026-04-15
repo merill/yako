@@ -10,6 +10,7 @@
         "test": "deno test --allow-read --reporter=dot --unstable-broadcast-channel",
         "types": "deno check",
         "format": "deno fmt",
+        "sync-icons": "deno run --allow-all ./tasks/sync-icons.ts",
         "app": "docker compose -f docker/compose.app.yaml up",
         "archive": "docker compose -f docker/compose.archive.yaml up --build"
     },

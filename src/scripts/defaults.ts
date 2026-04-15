@@ -159,8 +159,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://portal.office.com/onedrive',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/OneDrive/OneDrive_512.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Microsoft%20365/OneDrive/OneDrive_512.png',
         },
     },
     linksDefault02: {
@@ -171,8 +170,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://outlook.cloud.microsoft',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Outlook/Outlook_512.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Microsoft%20365/Outlook/Outlook_512.png',
         },
     },
     linksDefault03: {
@@ -183,8 +181,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://loop.cloud.microsoft',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Loop/Loop%20icon.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Microsoft%20365/Loop/Loop%20icon.png',
         },
     },
     linksDefault04: {
@@ -196,7 +193,7 @@ export const SYNC_DEFAULT: Sync = {
         icon: {
             type: 'url',
             value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Copilot%20(not%20M365)/Copilot%20(general)%20-%20250x250.png',
+                'https://getyako.com/icons/microsoft-cloud-logos/Copilot%20(not%20M365)/Copilot%20(general)%20-%20250x250.png',
         },
     },
     linksDefault05: {
@@ -208,7 +205,7 @@ export const SYNC_DEFAULT: Sync = {
         icon: {
             type: 'url',
             value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Power%20Platform/Power%20BI/Power%20BI%20300x300.png',
+                'https://getyako.com/icons/microsoft-cloud-logos/Power%20Platform/Power%20BI/Power%20BI%20300x300.png',
         },
     },
     linksDefault06: {
@@ -219,8 +216,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://to-do.office.com',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/To%20Do/To_Do.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Microsoft%20365/To%20Do/To_Do.png',
         },
     },
 
@@ -233,7 +229,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://portal.azure.com',
         icon: {
             type: 'url',
-            value: 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Azure/Azure.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Azure/Azure.png',
         },
     },
     linksDefault08: {
@@ -244,8 +240,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://entra.microsoft.com',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Entra/Microsoft-Entra-ID-color-icon.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Entra/Microsoft-Entra-ID-color-icon.png',
         },
     },
     linksDefault09: {
@@ -256,7 +251,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://intune.microsoft.com',
         icon: {
             type: 'url',
-            value: 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/other/Intune.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/other/Intune.png',
         },
     },
     linksDefault10: {
@@ -267,7 +262,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://security.microsoft.com',
         icon: {
             type: 'url',
-            value: 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/other/Defender_512.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/other/Defender_512.png',
         },
     },
     linksDefault11: {
@@ -278,8 +273,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://admin.microsoft.com',
         icon: {
             type: 'url',
-            value:
-                'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Microsoft%20365/Microsoft%20365%20Admin.png',
+            value: 'https://getyako.com/icons/microsoft-cloud-logos/Microsoft%20365/Microsoft%20365%20Admin.png',
         },
     },
 }

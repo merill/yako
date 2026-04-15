@@ -4,7 +4,7 @@ import type { MsPortalGroup } from '../../types/local.ts'
 
 // --- Constants ---
 
-const GITHUB_BASE = 'https://raw.githubusercontent.com/adamfowlerit/msportals.io/master/_data/portals/'
+const GITHUB_BASE = 'https://getyako.com/data/portals/'
 
 const CATEGORY_FILES: Record<string, string> = {
     admin: 'admin.json',

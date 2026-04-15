@@ -7,7 +7,7 @@ import portalIconMap from '../../../data/portal-icons.json' with { type: 'json' 
 import type { CatalogEntry } from '../../../types/local.ts'
 import type { LinkElem, LinkIcon } from '../../../types/shared.ts'
 
-const ICON_BASE_URL = 'https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/'
+const ICON_BASE_URL = 'https://getyako.com/icons/microsoft-cloud-logos/'
 
 // ─── Constants ───
 

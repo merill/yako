@@ -3,7 +3,7 @@ import type { CmdCommand } from '../../types/local.ts'
 
 // ─── Constants ───
 
-const CMD_CSV_URL = 'https://raw.githubusercontent.com/merill/cmd/main/website/config/commands.csv'
+const CMD_CSV_URL = 'https://getyako.com/data/commands.csv'
 
 const ASCII_LOGO =
     ` \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2557    \u2588\u2588\u2588\u2557   \u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557
