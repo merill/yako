@@ -313,3 +313,125 @@ Light and dark themes are handled via data attributes:
 
 - Modern browsers (Chrome 90+, Firefox 88+)
 - No polyfills or shims for older browser support
+
+---
+
+## 8. Upstream Data Sync & Cloudflare Deployment
+
+Yako serves all external data through the getyako.com website (hosted on Cloudflare Pages) instead
+of fetching directly from GitHub at runtime. This improves load times via CDN caching and removes
+the extension's runtime dependency on GitHub.
+
+### What gets synced
+
+| Source | Upstream Repo | Website Path |
+| :--- | :--- | :--- |
+| Microsoft Cloud Logos (icons) | `loryanstrant/MicrosoftCloudLogos` | `/icons/microsoft-cloud-logos/` |
+| Icon tree manifest | Generated from above | `/icons/microsoft-cloud-logos-tree.json` |
+| cmd.ms commands | `merill/cmd` | `/data/commands.csv` |
+| msportals.io portals | `adamfowlerit/msportals.io` | `/data/portals/*.json` (9 files) |
+
+### Sync script
+
+`deno task sync-icons` runs `tasks/sync-icons.ts` which downloads all three sources in parallel
+and places the files into `website/public/`. These paths are in `.gitignore` — they are not
+committed to the repo.
+
+Run this before building the website:
+
+```bash
+deno task sync-icons
+```
+
+### How the automated hourly check works
+
+A GitHub Action (`.github/workflows/sync-upstream.yml`) runs every hour and:
+
+1. Restores the last-known commit SHAs from GitHub Actions cache
+2. Fetches the latest commit SHA from each of the 3 upstream repos (lightweight API calls)
+3. Compares old vs new SHAs
+4. If any SHA changed, triggers a Cloudflare Pages deploy hook and updates the cache
+5. If nothing changed, exits immediately (no build triggered)
+
+The Cloudflare Pages build then runs `sync-icons` which downloads fresh data, followed by the
+Astro website build.
+
+### Setup steps
+
+Follow these steps to set up (or re-set up) the automated sync:
+
+#### 1. Create a Cloudflare Pages deploy hook
+
+1. Go to **Cloudflare Dashboard** > **Pages** > the yako website project
+2. **Settings** > **Builds & deployments**
+3. Scroll to **Deploy hooks**
+4. Click **Add deploy hook**, name it `github-sync`, select the production branch
+5. Copy the generated URL
+
+#### 2. Add the deploy hook secret to GitHub
+
+1. Go to the yako repo on GitHub > **Settings** > **Secrets and variables** > **Actions**
+2. Click **New repository secret**
+3. Name: `CLOUDFLARE_DEPLOY_HOOK`
+4. Value: paste the deploy hook URL from step 1
+
+#### 3. Configure Cloudflare Pages build settings
+
+In **Cloudflare Dashboard** > **Pages** > your project > **Settings** > **Builds & deployments**:
+
+**Build command:**
+
+```
+curl -fsSL https://deno.land/install.sh | sh && export PATH="$HOME/.deno/bin:$PATH" && deno task sync-icons && cd website && npm install && npm run build
+```
+
+Note: Cloudflare's build environment does not include Deno, so it must be installed first.
+Use `npm install` (not `npm ci`) because there is no `package-lock.json` in the website
+directory.
+
+**Build output directory:**
+
+```
+website/dist
+```
+
+This must be set relative to the repo root. Astro outputs to `website/dist/`, and Cloudflare
+needs the full path.
+
+#### 4. Verify the setup
+
+1. Go to **Actions** > **sync-upstream** > **Run workflow** to trigger manually
+2. The first run always triggers a deploy (no cached SHAs yet)
+3. Check the Cloudflare Pages dashboard to confirm the build started
+4. Subsequent runs will only trigger when an upstream repo has new commits
+
+#### 5. Changing the check frequency
+
+Edit the cron schedule in `.github/workflows/sync-upstream.yml`:
+
+```yaml
+schedule:
+    - cron: '17 * * * *'  # Every hour at :17
+```
+
+Examples:
+- Every 30 minutes: `'*/30 * * * *'`
+- Every 6 hours: `'17 */6 * * *'`
+- Once daily at 2am UTC: `'0 2 * * *'`
+
+### Troubleshooting
+
+- **`deno: not found`**: Cloudflare's build environment does not include Deno. The build
+  command must install it first with `curl -fsSL https://deno.land/install.sh | sh` and add
+  it to PATH.
+- **`npm ci` fails with lockfile error**: Use `npm install` instead. The website directory
+  does not have a `package-lock.json`.
+- **`Output directory "dist" not found`**: The build output directory in Cloudflare Pages
+  must be set to `website/dist` (relative to the repo root), not just `dist`.
+- **GitHub API rate limits**: Unauthenticated requests allow 60/hour. The workflow makes 3
+  requests per run, so hourly checks are well within limits.
+- **Cache not updating**: GitHub Actions cache is immutable per key. The workflow deletes
+  the old `upstream-shas` cache key before saving the new one.
+- **Deploy hook not firing**: Check that the `CLOUDFLARE_DEPLOY_HOOK` secret is set correctly
+  in GitHub repo settings. The workflow logs will show "Cloudflare deploy hook triggered" on
+  success.
