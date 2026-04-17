@@ -84,6 +84,24 @@
 
                 <hr />
 
+                <button type="button" id="edit-icon-search">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                        />
+                    </svg>
+
+                    <span class="trn">Change icon</span>
+                </button>
+
                 <!-- <button type="submit" class="trn" id="edit-inputs">Submit from inputs</button> -->
                 <button type="submit" class="btn-red" id="edit-delete" formnovalidate>
                     <svg
@@ -702,9 +720,38 @@
                             spellcheck="false"
                             maxlength="100"
                         />
-                        <select id="catalog-browser-category">
-                            <option value="All">All categories</option>
-                        </select>
+                        <div
+                            id="catalog-browser-category"
+                            class="catalog-browser-select"
+                            role="combobox"
+                            aria-haspopup="listbox"
+                            aria-expanded="false"
+                            aria-controls="catalog-browser-category-menu"
+                            tabindex="0"
+                        >
+                            <span class="catalog-browser-select-label">All categories</span>
+                            <svg
+                                class="catalog-browser-select-chevron"
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                            <div
+                                id="catalog-browser-category-menu"
+                                class="catalog-browser-select-menu"
+                                role="listbox"
+                                aria-label="Category filter"
+                            >
+                            </div>
+                        </div>
                         <button id="catalog-browser-close" class="btn-red" type="button">Close</button>
                     </div>
                 </div>
@@ -726,9 +773,38 @@
                             spellcheck="false"
                             maxlength="100"
                         />
-                        <select id="icon-picker-category">
-                            <option value="All">All categories</option>
-                        </select>
+                        <div
+                            id="icon-picker-category"
+                            class="icon-picker-select"
+                            role="combobox"
+                            aria-haspopup="listbox"
+                            aria-expanded="false"
+                            aria-controls="icon-picker-category-menu"
+                            tabindex="0"
+                        >
+                            <span class="icon-picker-select-label">All categories</span>
+                            <svg
+                                class="icon-picker-select-chevron"
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                            <div
+                                id="icon-picker-category-menu"
+                                class="icon-picker-select-menu"
+                                role="listbox"
+                                aria-label="Category filter"
+                            >
+                            </div>
+                        </div>
                         <button id="icon-picker-close" class="btn-red" type="button">Close</button>
                     </div>
                 </div>

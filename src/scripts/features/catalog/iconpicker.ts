@@ -31,24 +31,6 @@ let loaded = false
 let activeGroup = 'All'
 let onSelectCallback: ((iconUrl: string) => void) | null = null
 
-// ─── Group ordering ───
-
-const GROUP_ORDER = [
-    'Microsoft 365',
-    'Azure',
-    'Entra',
-    'Power Platform',
-    'Dynamics 365',
-    'Viva Suite',
-    'Viva',
-    'Fabric',
-    'Copilot',
-    'Other',
-    'Azure Services',
-    'Fabric Services',
-    'Intune Services',
-]
-
 // ─── Public API ───
 
 export async function openIconPicker(onSelect: (iconUrl: string) => void): Promise<void> {
@@ -122,13 +104,72 @@ function createDialog(): HTMLDialogElement {
         renderGrid()
     })
 
-    const select = dlg.querySelector<HTMLSelectElement>('#icon-picker-category')
-    select?.addEventListener('change', () => {
-        activeGroup = select.value
-        renderGrid()
-    })
+    setupCategoryCombobox(dlg)
 
     return dlg
+}
+
+// ─── Category combobox (shadcn-style) ───
+
+function setupCategoryCombobox(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#icon-picker-category')
+    const menu = dlg.querySelector<HTMLDivElement>('#icon-picker-category-menu')
+    if (!combo || !menu) return
+
+    combo.addEventListener('click', (e) => {
+        if (menu.contains(e.target as Node)) return
+        toggleCategoryMenu(dlg)
+    })
+
+    combo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            toggleCategoryMenu(dlg)
+        } else if (e.key === 'Escape' && isCategoryOpen(dlg)) {
+            e.stopPropagation()
+            closeCategoryMenu(dlg)
+        } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isCategoryOpen(dlg)) {
+            e.preventDefault()
+            openCategoryMenu(dlg)
+        }
+    })
+
+    // Close on outside click (within the dialog)
+    dlg.addEventListener('click', (e) => {
+        if (!isCategoryOpen(dlg)) return
+        if (combo.contains(e.target as Node)) return
+        closeCategoryMenu(dlg)
+    })
+}
+
+function isCategoryOpen(dlg: HTMLDialogElement): boolean {
+    return dlg.querySelector('#icon-picker-category')?.classList.contains('open') ?? false
+}
+
+function toggleCategoryMenu(dlg: HTMLDialogElement): void {
+    if (isCategoryOpen(dlg)) closeCategoryMenu(dlg)
+    else openCategoryMenu(dlg)
+}
+
+function openCategoryMenu(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#icon-picker-category')
+    if (!combo) return
+    combo.classList.add('open')
+    combo.setAttribute('aria-expanded', 'true')
+}
+
+function closeCategoryMenu(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#icon-picker-category')
+    if (!combo) return
+    combo.classList.remove('open')
+    combo.setAttribute('aria-expanded', 'false')
+}
+
+function updateCategoryLabel(): void {
+    if (!dialog) return
+    const label = dialog.querySelector<HTMLSpanElement>('.icon-picker-select-label')
+    if (!label) return
+    label.textContent = activeGroup === 'All' ? 'All categories' : activeGroup
 }
 
 // ─── Data loading ───
@@ -180,37 +221,59 @@ function writeCache(list: CatalogEntry[]): void {
 function populateCategoryDropdown(): void {
     if (!dialog) return
 
-    const select = dialog.querySelector<HTMLSelectElement>('#icon-picker-category')
-    if (!select) return
+    const menu = dialog.querySelector<HTMLDivElement>('#icon-picker-category-menu')
+    if (!menu) return
 
-    while (select.options.length > 1) {
-        select.remove(1)
+    menu.innerHTML = ''
+
+    const groups = ['All', ...getGroups()]
+
+    for (const g of groups) {
+        const opt = document.createElement('div')
+        opt.className = 'icon-picker-select-option'
+        opt.setAttribute('role', 'option')
+        opt.dataset.value = g
+        opt.textContent = g === 'All' ? 'All categories' : g
+        if (g === activeGroup) {
+            opt.classList.add('selected')
+            opt.setAttribute('aria-selected', 'true')
+        }
+
+        opt.addEventListener('click', () => {
+            setActiveGroup(g)
+            if (dialog) closeCategoryMenu(dialog)
+        })
+
+        menu.appendChild(opt)
     }
 
-    for (const g of getGroups()) {
-        const option = document.createElement('option')
-        option.value = g
-        option.textContent = g
-        select.appendChild(option)
+    updateCategoryLabel()
+}
+
+function setActiveGroup(value: string): void {
+    if (activeGroup === value) return
+    activeGroup = value
+
+    if (dialog) {
+        const menu = dialog.querySelector<HTMLDivElement>('#icon-picker-category-menu')
+        if (menu) {
+            for (const opt of menu.querySelectorAll<HTMLDivElement>('.icon-picker-select-option')) {
+                const isSel = opt.dataset.value === value
+                opt.classList.toggle('selected', isSel)
+                if (isSel) opt.setAttribute('aria-selected', 'true')
+                else opt.removeAttribute('aria-selected')
+            }
+        }
     }
 
-    select.value = activeGroup
+    updateCategoryLabel()
+    renderGrid()
 }
 
 function getGroups(): string[] {
     const set = new Set<string>()
     for (const p of products) set.add(p.group)
-
-    const ordered: string[] = []
-    for (const g of GROUP_ORDER) {
-        if (set.has(g)) {
-            ordered.push(g)
-            set.delete(g)
-        }
-    }
-
-    const remaining = Array.from(set).sort()
-    return [...ordered, ...remaining]
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
 }
 
 // ─── Rendering ───

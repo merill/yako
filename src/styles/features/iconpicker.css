@@ -77,6 +77,14 @@
 }
 
 #icon-picker-category {
+    position: relative;
+}
+
+.icon-picker-select {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-width: 160px;
     padding: 0.55em 0.8em;
     font-size: 13px;
     color: var(--color-text);
@@ -88,10 +96,110 @@
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
+    user-select: none;
+    transition: border-color 0.15s;
 }
 
-#icon-picker-category:focus {
+.icon-picker-select:focus-visible,
+.icon-picker-select.open {
     border-color: var(--color-blue);
+}
+
+.icon-picker-select-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.icon-picker-select-chevron {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: transform 0.15s;
+}
+
+.icon-picker-select.open .icon-picker-select-chevron {
+    transform: rotate(180deg);
+}
+
+.icon-picker-select-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    left: auto;
+    min-width: 100%;
+    max-width: 280px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 4px;
+    background-color: #ffffff;
+    border: 1px solid var(--color-dialog-border);
+    border-radius: 0.7em;
+    box-shadow: 0 10px 32px -4px rgba(0, 0, 0, 0.3), 0 4px 12px -2px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.12s, transform 0.12s;
+    z-index: 2;
+    scrollbar-width: thin;
+}
+
+[data-theme='dark'] .icon-picker-select-menu {
+    background-color: #1f1f22;
+}
+
+.icon-picker-select-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.icon-picker-select-menu::-webkit-scrollbar-thumb {
+    background-color: var(--color-dialog-border);
+    border-radius: 3px;
+}
+
+.icon-picker-select.open .icon-picker-select-menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.icon-picker-select-option {
+    display: flex;
+    align-items: center;
+    padding: 7px 10px 7px 28px;
+    border-radius: 0.5em;
+    color: var(--color-text);
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    transition: background-color 0.1s;
+}
+
+.icon-picker-select-option:hover,
+.icon-picker-select-option.highlighted {
+    background-color: #fff2;
+}
+
+[data-theme='light'] .icon-picker-select-option:hover,
+[data-theme='light'] .icon-picker-select-option.highlighted {
+    background-color: #0001;
+}
+
+.icon-picker-select-option.selected::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    transform: translateY(-50%);
+    background: var(--color-blue);
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>')
+        no-repeat center / contain;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>')
+        no-repeat center / contain;
 }
 
 #icon-picker-close {

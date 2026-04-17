@@ -107,7 +107,10 @@ export async function populateDialogWithEditLink(
     event.preventDefault()
 
     // removes buttons from the global context menu
-    domeditlink.querySelectorAll('#contextActions button, #background-actions').forEach(function (contextButton): void {
+    // (keeps add-portal-link so toggleEditInputs() can show it in new-link scenarios)
+    domeditlink.querySelectorAll(
+        '#contextActions button:not([data-action="add-portal-link"]), #background-actions',
+    ).forEach(function (contextButton): void {
         contextButton.classList.remove('on')
     })
 
@@ -217,7 +220,7 @@ function toggleEditInputs(): string[] {
         } else if (target.folder) {
             inputs = ['title', 'delete', 'apply']
         } else if (target.link) {
-            inputs = ['title', 'url*', 'icon', 'icon-url*', 'delete', 'refresh', 'apply']
+            inputs = ['title', 'url*', 'icon', 'icon-url*', 'icon-search', 'delete', 'refresh', 'apply']
         } else {
             inputs = ['title', 'url*', 'add']
             inputToFocus = domurl
@@ -231,7 +234,7 @@ function toggleEditInputs(): string[] {
         } else if (selectall) {
             inputs = ['delete', 'unfolder']
         } else if (target.link) {
-            inputs = ['title', 'url*', 'icon', 'icon-url*', 'delete', 'apply', 'unfolder']
+            inputs = ['title', 'url*', 'icon', 'icon-url*', 'icon-search', 'delete', 'apply', 'unfolder']
         } else {
             inputs = ['title', 'url*', 'add']
             inputToFocus = domurl
@@ -254,6 +257,12 @@ function toggleEditInputs(): string[] {
     const hasLabels = inputs.includes('title') || inputs.includes('title*') || inputs.includes('url*') ||
         inputs.includes('icon')
     domeditlink.querySelector('hr')?.classList.toggle('on', hasLabels)
+
+    // show "Add Microsoft Portal link" button in new-link scenarios
+    // (right-click inside a group or folder on an empty spot, or global "add new link")
+    const isNewLinkScenario = inputs.includes('title') && inputs.includes('url*') && inputs.includes('add')
+    domeditlink.querySelector<HTMLButtonElement>('[data-action="add-portal-link"]')
+        ?.classList.toggle('on', isNewLinkScenario)
 
     if (deleteButtonTxt) {
         if (selectall) {
@@ -286,7 +295,34 @@ function toggleEditInputs(): string[] {
 queueMicrotask(() => {
     document.getElementById('editlink-form')?.addEventListener('submit', submitChanges)
     domicontype?.addEventListener('change', toggleIconType)
+    document.getElementById('edit-icon-search')?.addEventListener('click', openIconLibrarySearch)
 })
+
+function openIconLibrarySearch(): void {
+    const id = editStates?.selected?.[0]
+    const title = domtitle.value
+    const url = domurl.value
+
+    openIconPicker((iconUrl: string) => {
+        if (id) {
+            quickLinks(undefined, {
+                updateLink: {
+                    id,
+                    title,
+                    url,
+                    icon: { type: 'url', value: iconUrl },
+                },
+            })
+        }
+
+        // Also reflect the chosen URL in the icon-url input so users can see/edit it
+        domiconurl.value = iconUrl
+        toggleIconType('url')
+
+        // Close the context menu / edit dialog after applying
+        closeContextMenu()
+    })
+}
 
 /**
  * HTML has peculiar (and limiting) ways of figuring out which button to submit to on enter

@@ -117,14 +117,72 @@ function createDialog(): HTMLDialogElement {
         renderGrid()
     })
 
-    // Category dropdown
-    const select = dlg.querySelector<HTMLSelectElement>('#catalog-browser-category')
-    select?.addEventListener('change', () => {
-        activeCategory = select.value
-        renderGrid()
-    })
+    setupCategoryCombobox(dlg)
 
     return dlg
+}
+
+// ─── Category combobox (shadcn-style) ───
+
+function setupCategoryCombobox(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#catalog-browser-category')
+    const menu = dlg.querySelector<HTMLDivElement>('#catalog-browser-category-menu')
+    if (!combo || !menu) return
+
+    combo.addEventListener('click', (e) => {
+        if (menu.contains(e.target as Node)) return
+        toggleCategoryMenu(dlg)
+    })
+
+    combo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            toggleCategoryMenu(dlg)
+        } else if (e.key === 'Escape' && isCategoryOpen(dlg)) {
+            e.stopPropagation()
+            closeCategoryMenu(dlg)
+        } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isCategoryOpen(dlg)) {
+            e.preventDefault()
+            openCategoryMenu(dlg)
+        }
+    })
+
+    // Close on outside click (within the dialog)
+    dlg.addEventListener('click', (e) => {
+        if (!isCategoryOpen(dlg)) return
+        if (combo.contains(e.target as Node)) return
+        closeCategoryMenu(dlg)
+    })
+}
+
+function isCategoryOpen(dlg: HTMLDialogElement): boolean {
+    return dlg.querySelector('#catalog-browser-category')?.classList.contains('open') ?? false
+}
+
+function toggleCategoryMenu(dlg: HTMLDialogElement): void {
+    if (isCategoryOpen(dlg)) closeCategoryMenu(dlg)
+    else openCategoryMenu(dlg)
+}
+
+function openCategoryMenu(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#catalog-browser-category')
+    if (!combo) return
+    combo.classList.add('open')
+    combo.setAttribute('aria-expanded', 'true')
+}
+
+function closeCategoryMenu(dlg: HTMLDialogElement): void {
+    const combo = dlg.querySelector<HTMLDivElement>('#catalog-browser-category')
+    if (!combo) return
+    combo.classList.remove('open')
+    combo.setAttribute('aria-expanded', 'false')
+}
+
+function updateCategoryLabel(): void {
+    if (!dialog) return
+    const label = dialog.querySelector<HTMLSpanElement>('.catalog-browser-select-label')
+    if (!label) return
+    label.textContent = activeCategory === 'All' ? 'All categories' : activeCategory
 }
 
 // ─── Category dropdown ───
@@ -132,22 +190,53 @@ function createDialog(): HTMLDialogElement {
 function populateCategoryDropdown(): void {
     if (!dialog) return
 
-    const select = dialog.querySelector<HTMLSelectElement>('#catalog-browser-category')
-    if (!select) return
+    const menu = dialog.querySelector<HTMLDivElement>('#catalog-browser-category-menu')
+    if (!menu) return
 
-    // Keep only the first "All categories" option
-    while (select.options.length > 1) {
-        select.remove(1)
+    menu.innerHTML = ''
+
+    const categories = ['All', ...getCategories()]
+
+    for (const cat of categories) {
+        const opt = document.createElement('div')
+        opt.className = 'catalog-browser-select-option'
+        opt.setAttribute('role', 'option')
+        opt.dataset.value = cat
+        opt.textContent = cat === 'All' ? 'All categories' : cat
+        if (cat === activeCategory) {
+            opt.classList.add('selected')
+            opt.setAttribute('aria-selected', 'true')
+        }
+
+        opt.addEventListener('click', () => {
+            setActiveCategory(cat)
+            if (dialog) closeCategoryMenu(dialog)
+        })
+
+        menu.appendChild(opt)
     }
 
-    for (const cat of getCategories()) {
-        const option = document.createElement('option')
-        option.value = cat
-        option.textContent = cat
-        select.appendChild(option)
+    updateCategoryLabel()
+}
+
+function setActiveCategory(value: string): void {
+    if (activeCategory === value) return
+    activeCategory = value
+
+    if (dialog) {
+        const menu = dialog.querySelector<HTMLDivElement>('#catalog-browser-category-menu')
+        if (menu) {
+            for (const opt of menu.querySelectorAll<HTMLDivElement>('.catalog-browser-select-option')) {
+                const isSel = opt.dataset.value === value
+                opt.classList.toggle('selected', isSel)
+                if (isSel) opt.setAttribute('aria-selected', 'true')
+                else opt.removeAttribute('aria-selected')
+            }
+        }
     }
 
-    select.value = activeCategory
+    updateCategoryLabel()
+    renderGrid()
 }
 
 // ─── Rendering ───
@@ -299,37 +388,7 @@ function getCategories(): string[] {
         catSet.add(normaliseCategory(entry))
     }
 
-    // Sort based on known order, then alphabetically for the rest
-    const ordered: string[] = []
-    const known = [
-        'Microsoft 365',
-        'AI',
-        'Azure',
-        'Entra',
-        'Intune',
-        'Defender',
-        'XDR Sentinel',
-        'Purview',
-        'My Pages',
-        'General',
-        'Developer',
-        'Licensing',
-        'Health & Status',
-        'Partner',
-        'Trials',
-        'Other',
-    ]
-
-    for (const cat of known) {
-        if (catSet.has(cat)) {
-            ordered.push(cat)
-            catSet.delete(cat)
-        }
-    }
-
-    // Remaining categories alphabetically
-    const remaining = Array.from(catSet).sort()
-    return [...ordered, ...remaining]
+    return Array.from(catSet).sort((a, b) => a.localeCompare(b))
 }
 
 interface GroupedEntries {
