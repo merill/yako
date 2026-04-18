@@ -115,3 +115,21 @@
 #settings-footer-based-on + div {
     margin-top: 1.5em;
 }
+
+/* ─── Powered By ─── */
+#settings-footer-powered-by {
+    margin-top: 1.5em;
+    padding-top: 1em;
+    border-top: 1px solid var(--color-border);
+    font-size: 12px;
+    color: var(--color-placeholder);
+}
+
+#settings-footer-powered-by a {
+    color: var(--color-blue);
+    text-decoration: none;
+}
+
+#settings-footer-powered-by a:hover {
+    text-decoration: underline;
+}

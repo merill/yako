@@ -51,7 +51,7 @@ export interface MsPortalsCache {
     categories: Record<string, MsPortalGroup[]>
 }
 
-export interface IconPickerCacheEntry {
+export interface IconPickerEntry {
     id: string
     name: string
     altnames: string
@@ -61,11 +61,6 @@ export interface IconPickerCacheEntry {
     type?: string
     prodfamilies?: string[]
     monochrome?: boolean
-}
-
-export interface IconPickerCache {
-    lastFetch: number
-    entries: IconPickerCacheEntry[]
 }
 
 export interface UrlIconCacheEntry {
@@ -101,9 +96,6 @@ export interface Local {
 
     // msportals.io
     msportalsCache?: MsPortalsCache
-
-    // Icon picker (Microsoft Cloud Logos catalog)
-    iconPickerCache?: IconPickerCache
 
     // Links
     [key: `x-icon-${string}`]: string

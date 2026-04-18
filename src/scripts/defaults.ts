@@ -192,7 +192,7 @@ export const SYNC_DEFAULT: Sync = {
         url: 'https://copilot.microsoft.com',
         icon: {
             type: 'url',
-            value: 'https://getyako.com/ms/logos/copilot/copilot-general-250x250.png',
+            value: 'https://getyako.com/ms/logos/copilot/microsoft-365-copilot.svg',
         },
     },
     linksDefault05: {

@@ -1,10 +1,8 @@
 import { getHTMLTemplate } from '../../shared/dom.ts'
-import { storage } from '../../storage.ts'
-import type { IconPickerCacheEntry as CatalogEntry } from '../../../types/local.ts'
+import type { IconPickerEntry as CatalogEntry } from '../../../types/local.ts'
 
 const ICON_BASE_URL = 'https://getyako.com/ms/'
 const CATALOG_URL = 'https://getyako.com/ms/catalog.json'
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
 // ─── Types ───
 
@@ -164,12 +162,7 @@ function getGroups(): string[] {
 // ─── Data loading ───
 
 async function loadProducts(): Promise<CatalogEntry[]> {
-    const cached = await readCache()
-    if (cached) return cached
-
-    const fetched = await fetchProducts()
-    writeCache(fetched)
-    return fetched
+    return await fetchProducts()
 }
 
 async function fetchProducts(): Promise<CatalogEntry[]> {
@@ -182,28 +175,6 @@ async function fetchProducts(): Promise<CatalogEntry[]> {
 
     const data = await response.json()
     return (data.entries ?? []) as CatalogEntry[]
-}
-
-async function readCache(): Promise<CatalogEntry[] | null> {
-    try {
-        const local = await storage.local.get('iconPickerCache')
-        const cache = local.iconPickerCache
-        if (!cache) return null
-        if (Date.now() - cache.lastFetch > CACHE_TTL_MS) return null
-        return cache.entries
-    } catch {
-        return null
-    }
-}
-
-function writeCache(list: CatalogEntry[]): void {
-    try {
-        storage.local.set({
-            iconPickerCache: { lastFetch: Date.now(), entries: list },
-        })
-    } catch {
-        // Storage full or unavailable — ignore
-    }
 }
 
 // ─── Rendering ───
